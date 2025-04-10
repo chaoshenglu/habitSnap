@@ -262,13 +262,15 @@ async function saveHabit() {
     }
     
     // 创建习惯记录，添加选择的日期
-    const result = await habitsStore.createHabit({
+    const newHabit = {
       type: habitType.value,
       remark: habitRemark.value,
       imageUrls,
       score: habitScore.value,
       created_at: selectedDate.value.toISOString() // 使用选择的日期
-    })
+    }
+    console.log('New habit:', newHabit)
+    const result = await habitsStore.createHabit(newHabit)
     
     if (result.success) {
       // 创建成功，返回列表页
