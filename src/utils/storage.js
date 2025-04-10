@@ -21,7 +21,7 @@ export async function uploadImages(files, userId) {
       
       // 上传文件到Supabase存储
       const { data, error } = await supabase.storage
-        .from('habits')
+        .from('habit-images')
         .upload(filePath, file, {
           cacheControl: '3600',
           upsert: false
@@ -31,7 +31,7 @@ export async function uploadImages(files, userId) {
       
       // 获取公共URL
       const { data: { publicUrl } } = supabase.storage
-        .from('habits')
+        .from('habit-images')
         .getPublicUrl(data.path)
       
       urls.push(publicUrl)
@@ -54,7 +54,7 @@ export async function deleteImage(url) {
     // 从URL中提取文件路径
     const urlObj = new URL(url)
     const pathParts = urlObj.pathname.split('/')
-    const bucketName = 'habits'
+    const bucketName = 'habit-images'
     
     // 找到文件路径，通常是最后两部分（用户ID/文件名）
     const filePath = pathParts.slice(-2).join('/')
