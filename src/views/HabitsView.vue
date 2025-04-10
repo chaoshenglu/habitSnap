@@ -357,6 +357,26 @@ async function deleteHabit() {
   flex-shrink: 0;
 }
 
+/* 添加以下样式修复日期选择器超出屏幕的问题 */
+.date-filter {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+@media (min-width: 480px) {
+  .date-filter {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.date-filter .form-control {
+  width: 100%;
+  min-width: 0;
+}
+
 .habits-list {
   margin-top: 16px;
 }
