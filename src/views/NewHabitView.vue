@@ -395,4 +395,10 @@ async function saveHabit() {
 .w-100 {
   width: 100%;
 }
+
+/* 添加底部安全区域，确保按钮不被底部导航栏遮挡 */
+.habit-form {
+  padding: 16px 0;
+  padding-bottom: 80px; /* 增加底部内边距，确保按钮不被导航栏遮挡 */
+}
 </style>
