@@ -4,7 +4,27 @@
       <router-link to="/habits" class="back-btn">
         <span class="material-icons">arrow_back</span>
       </router-link>
-      <h1 class="navbar-title">记录新习惯</h1>
+      <div class="navbar-title date-selector" @click="showDatePicker = true">
+        {{ formatDate(selectedDate) }}
+        <span class="material-icons date-icon">event</span>
+      </div>
+    </div>
+    
+    <!-- 日期选择器 -->
+    <div v-if="showDatePicker" class="date-picker-overlay" @click="showDatePicker = false">
+      <div class="date-picker-container" @click.stop>
+        <h3>选择日期</h3>
+        <input 
+          type="date" 
+          class="form-control" 
+          v-model="dateInput"
+          :max="today"
+        >
+        <div class="date-picker-actions">
+          <button class="btn" @click="showDatePicker = false">取消</button>
+          <button class="btn btn-primary" @click="confirmDateSelection">确定</button>
+        </div>
+      </div>
     </div>
     
     <div class="container">
@@ -144,6 +164,12 @@ const router = useRouter()
 const authStore = useAuthStore()
 const habitsStore = useHabitsStore()
 
+// 日期选择相关
+const today = new Date().toISOString().split('T')[0] // 今天的日期，格式为 YYYY-MM-DD
+const selectedDate = ref(new Date()) // 默认为今天
+const dateInput = ref(today)
+const showDatePicker = ref(false)
+
 // 表单数据
 const habitType = ref('sleep') // 默认选择睡眠
 const habitScore = ref(3) // 默认3分
@@ -155,6 +181,23 @@ const previewUrls = ref([])
 const error = ref('')
 const isSubmitting = ref(false)
 const fileInput = ref(null)
+
+// 格式化日期显示
+function formatDate(date) {
+  return date.toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+
+// 确认日期选择
+function confirmDateSelection() {
+  if (dateInput.value) {
+    selectedDate.value = new Date(dateInput.value)
+  }
+  showDatePicker.value = false
+}
 
 // 表单验证
 const isFormValid = computed(() => {
@@ -218,12 +261,13 @@ async function saveHabit() {
       imageUrls = await uploadImages(selectedFiles.value, authStore.user.id)
     }
     
-    // 创建习惯记录
+    // 创建习惯记录，添加选择的日期
     const result = await habitsStore.createHabit({
       type: habitType.value,
       remark: habitRemark.value,
       imageUrls,
-      score: habitScore.value
+      score: habitScore.value,
+      created_at: selectedDate.value.toISOString() // 使用选择的日期
     })
     
     if (result.success) {
@@ -263,8 +307,58 @@ async function saveHabit() {
   margin: 0;
 }
 
+/* 日期选择器样式 */
+.date-selector {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.date-icon {
+  margin-left: 8px;
+  font-size: 20px;
+}
+
+.date-picker-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.date-picker-container {
+  background-color: white;
+  border-radius: var(--border-radius);
+  padding: 20px;
+  width: 90%;
+  max-width: 320px;
+}
+
+.date-picker-container h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.date-picker-container .form-control {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.date-picker-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
 .habit-form {
   padding: 16px 0;
+  padding-bottom: 80px; /* 增加底部内边距，确保按钮不被导航栏遮挡 */
 }
 
 .type-selector {
