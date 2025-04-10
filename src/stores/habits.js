@@ -27,7 +27,7 @@ export const useHabitsStore = defineStore('habits', () => {
         .from('habits')
         .select('*')
         .eq('user_id', authStore.user.id)
-        .order('created_at', { ascending: false })
+        .order('habit_date', { ascending: false })
       
       // 应用类型筛选
       if (filters.value.type) {
@@ -36,14 +36,14 @@ export const useHabitsStore = defineStore('habits', () => {
       
       // 应用日期筛选
       if (filters.value.startDate) {
-        query = query.gte('created_at', filters.value.startDate)
+        query = query.gte('habit_date', filters.value.startDate)
       }
       
       if (filters.value.endDate) {
         // 将结束日期设置为当天的23:59:59
         const endDate = new Date(filters.value.endDate)
         endDate.setHours(23, 59, 59)
-        query = query.lte('created_at', endDate.toISOString())
+        query = query.lte('habit_date', endDate.toISOString())
       }
       
       const { data, error: fetchError } = await query
@@ -72,7 +72,7 @@ export const useHabitsStore = defineStore('habits', () => {
         remark: remark || null,
         image_urls: imageUrls || [],
         score: score || null,
-        created_at: new Date().toISOString()
+        habit_date: new Date().toISOString()
       }
       
       const { data, error: insertError } = await supabase

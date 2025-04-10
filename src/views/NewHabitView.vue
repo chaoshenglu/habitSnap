@@ -267,7 +267,7 @@ async function saveHabit() {
       remark: habitRemark.value,
       imageUrls,
       score: habitScore.value,
-      created_at: selectedDate.value.toISOString() // 使用选择的日期
+      habit_date: selectedDate.value.toISOString() // 使用选择的日期
     }
     console.log('New habit:', newHabit)
     const result = await habitsStore.createHabit(newHabit)

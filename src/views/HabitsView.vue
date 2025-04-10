@@ -93,7 +93,7 @@
             <span class="habit-tag" :class="`habit-tag-${habit.type}`">
               {{ habitTypeText(habit.type) }}
             </span>
-            <span class="habit-date">{{ formatDate(habit.created_at) }}</span>
+            <span class="habit-date">{{ formatDate(habit.habit_date) }}</span>
           </div>
           
           <div v-if="habit.image_urls && habit.image_urls.length > 0" class="habit-images">
