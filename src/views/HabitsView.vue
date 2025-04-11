@@ -130,11 +130,6 @@
       </div>
     </div>
     
-    <!-- 添加新习惯的浮动按钮 -->
-    <router-link to="/habits/new" class="camera-btn">
-      <span class="material-icons">add_a_photo</span>
-    </router-link>
-    
     <!-- 图片查看器 -->
     <div v-if="imageViewer.visible" class="image-viewer" @click="closeImageViewer">
       <div class="image-viewer-content" @click.stop>
