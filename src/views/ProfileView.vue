@@ -21,29 +21,49 @@
       <div class="card chart-card">
         <h3 class="chart-title">习惯评分趋势</h3>
         <div class="chart-container">
-          <Line v-if="chartData" :data="chartData" :options="chartOptions" />
+          <Line v-if="chartData" :data="filteredChartData" :options="chartOptions" />
           <div v-else class="chart-loading">加载中...</div>
         </div>
       </div>
 
       <div class="profile-stats">
-          <div class="stat-item">
+          <div 
+            class="stat-item" 
+            :class="{ active: selectedType === 'all' }"
+            @click="selectedType = 'all'"
+          >
             <span class="stat-value">{{ habitsStore.habits.length }}</span>
             <span class="stat-label">全部</span>
           </div>
-          <div class="stat-item">
+          <div 
+            class="stat-item" 
+            :class="{ active: selectedType === 'sleep' }"
+            @click="selectedType = 'sleep'"
+          >
             <span class="stat-value">{{ habitsStore.habitsByType.sleep.length }}</span>
             <span class="stat-label">睡眠</span>
           </div>
-          <div class="stat-item">
+          <div 
+            class="stat-item" 
+            :class="{ active: selectedType === 'diet' }"
+            @click="selectedType = 'diet'"
+          >
             <span class="stat-value">{{ habitsStore.habitsByType.diet.length }}</span>
             <span class="stat-label">饮食</span>
           </div>
-          <div class="stat-item">
+          <div 
+            class="stat-item" 
+            :class="{ active: selectedType === 'exercise' }"
+            @click="selectedType = 'exercise'"
+          >
             <span class="stat-value">{{ habitsStore.habitsByType.exercise.length }}</span>
             <span class="stat-label">锻炼</span>
           </div>
-          <div class="stat-item">
+          <div 
+            class="stat-item" 
+            :class="{ active: selectedType === 'meditation' }"
+            @click="selectedType = 'meditation'"
+          >
             <span class="stat-value">{{ habitsStore.habitsByType.meditation.length }}</span>
             <span class="stat-label">冥想</span>
           </div>
@@ -72,6 +92,38 @@ const router = useRouter()
 const authStore = useAuthStore()
 const habitsStore = useHabitsStore()
 const chartData = ref(null)
+const selectedType = ref('all') // 默认选择全部
+
+// 根据选择的类型过滤图表数据
+const filteredChartData = computed(() => {
+  if (!chartData.value) return null
+  
+  // 如果选择全部，返回完整数据
+  if (selectedType.value === 'all') {
+    return chartData.value
+  }
+  
+  // 否则只返回选中类型的数据
+  const filteredData = {
+    labels: chartData.value.labels,
+    datasets: chartData.value.datasets.filter(dataset => {
+      // 根据标签匹配类型
+      const typeMap = {
+        '睡眠': 'sleep',
+        '饮食': 'diet',
+        '锻炼': 'exercise',
+        '冥想': 'meditation'
+      }
+      
+      // 查找与选中类型匹配的数据集
+      return Object.entries(typeMap).some(([label, type]) => {
+        return dataset.label === label && type === selectedType.value
+      })
+    })
+  }
+  
+  return filteredData
+})
 
 // 图表配置
 const chartOptions = {
@@ -309,6 +361,16 @@ async function handleLogout() {
   padding: 12px;
   border-radius: var(--border-radius);
   background-color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.stat-item:hover {
+  background-color: var(--light-bg);
+}
+
+.stat-item.active {
+  background-color: rgba(var(--primary-color), 0.1);
 }
 
 .stat-value {
