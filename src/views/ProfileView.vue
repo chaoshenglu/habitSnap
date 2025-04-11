@@ -29,7 +29,7 @@
       <div class="profile-stats">
           <div class="stat-item">
             <span class="stat-value">{{ habitsStore.habits.length }}</span>
-            <span class="stat-label">总数</span>
+            <span class="stat-label">全部</span>
           </div>
           <div class="stat-item">
             <span class="stat-value">{{ habitsStore.habitsByType.sleep.length }}</span>
