@@ -371,6 +371,11 @@ async function handleLogout() {
 
 .stat-item.active {
   background-color: var(--primary-color);
+  color: white;
+}
+
+.stat-item.active .stat-label {
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .stat-value {
