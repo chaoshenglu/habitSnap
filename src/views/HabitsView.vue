@@ -7,46 +7,6 @@
     <div class="container">
       <div class="filter-section card mb-2">
         <div class="form-group">
-          <div class="type-filter">
-            <button
-              class="type-btn"
-              :class="{ active: !habitsStore.filters.type }"
-              @click="habitsStore.updateFilters({ type: null })"
-            >
-              全部
-            </button>
-            <button
-              class="type-btn sleep"
-              :class="{ active: habitsStore.filters.type === 'sleep' }"
-              @click="habitsStore.updateFilters({ type: 'sleep' })"
-            >
-              睡眠
-            </button>
-            <button
-              class="type-btn diet"
-              :class="{ active: habitsStore.filters.type === 'diet' }"
-              @click="habitsStore.updateFilters({ type: 'diet' })"
-            >
-              饮食
-            </button>
-            <button
-              class="type-btn exercise"
-              :class="{ active: habitsStore.filters.type === 'exercise' }"
-              @click="habitsStore.updateFilters({ type: 'exercise' })"
-            >
-              锻炼
-            </button>
-            <button
-              class="type-btn meditation"
-              :class="{ active: habitsStore.filters.type === 'meditation' }"
-              @click="habitsStore.updateFilters({ type: 'meditation' })"
-            >
-              冥想
-            </button>
-          </div>
-        </div>
-
-        <div class="form-group">
           <label class="form-label">日期范围</label>
 
           <div class="date-filter">
@@ -401,46 +361,6 @@ function editHabit(habit) {
 
 .filter-section {
   margin-top: 16px;
-}
-
-.type-filter {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.type-btn {
-  padding: 8px 12px;
-  border-radius: 16px;
-  border: 1px solid #ddd;
-  background-color: white;
-  font-size: 14px;
-}
-
-.type-btn.active {
-  color: white;
-  border-color: transparent;
-}
-
-.type-btn.active {
-  background-color: #666;
-}
-
-.type-btn.sleep.active {
-  background-color: #0288d1;
-}
-
-.type-btn.diet.active {
-  background-color: #388e3c;
-}
-
-.type-btn.exercise.active {
-  background-color: #f57c00;
-}
-
-.type-btn.meditation.active {
-  background-color: #8e24aa;
 }
 
 .date-filter {
