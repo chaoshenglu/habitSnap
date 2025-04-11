@@ -21,7 +21,7 @@
       <div class="card chart-card">
         <h3 class="chart-title">习惯评分趋势</h3>
         <div class="chart-container">
-          <LineChart v-if="chartData" :chartData="chartData" :options="chartOptions" />
+          <Line v-if="chartData" :data="chartData" :options="chartOptions" />
           <div v-else class="chart-loading">加载中...</div>
         </div>
       </div>
@@ -61,7 +61,8 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useHabitsStore } from '../stores/habits'
-import { LineChart } from 'vue-chartjs'
+// Fix the import statement
+import { Line } from 'vue-chartjs'
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
 
 // 注册 Chart.js 组件
@@ -298,6 +299,7 @@ async function handleLogout() {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
+  margin-bottom: 20px;
 }
 
 .stat-item {
