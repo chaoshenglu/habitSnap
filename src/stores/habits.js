@@ -153,6 +153,49 @@ export const useHabitsStore = defineStore('habits', () => {
     return result
   })
   
+  // 更新习惯记录
+  async function updateHabit(id, { type, remark, imageUrls, score, habit_date }) {
+    if (!authStore.isAuthenticated) return { success: false, error: 'User not authenticated' }
+    
+    loading.value = true
+    error.value = null
+    
+    try {
+      const updatedHabit = {
+        type,
+        remark: remark || null,
+        image_urls: imageUrls || [],
+        score: score || null,
+        habit_date: habit_date
+      }
+      
+      const { data, error: updateError } = await supabase
+        .from('habits')
+        .update(updatedHabit)
+        .eq('id', id)
+        .eq('user_id', authStore.user.id)
+        .select()
+      
+      if (updateError) throw updateError
+      
+      // 更新本地状态
+      if (data && data.length > 0) {
+        const index = habits.value.findIndex(h => h.id === id)
+        if (index !== -1) {
+          habits.value[index] = data[0]
+        }
+      }
+      
+      return { success: true, data: data?.[0] }
+    } catch (err) {
+      error.value = err.message
+      console.error('Error updating habit:', err)
+      return { success: false, error: err.message }
+    } finally {
+      loading.value = false
+    }
+  }
+  
   return {
     habits,
     loading,
@@ -162,6 +205,7 @@ export const useHabitsStore = defineStore('habits', () => {
     fetchHabits,
     createHabit,
     deleteHabit,
+    updateHabit,
     updateFilters,
     resetFilters
   }

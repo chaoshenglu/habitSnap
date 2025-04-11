@@ -90,6 +90,9 @@
             <span class="habit-tag" :class="`habit-tag-${habit.type}`">
               {{ habitTypeText(habit.type) }}
             </span>
+            <button class="more-btn" @click.stop="openActionMenu(habit)">
+              <span class="material-icons">more_vert</span>
+            </button>
           </div>
           
           <div v-if="habit.image_urls && habit.image_urls.length > 0" class="habit-images">
@@ -156,6 +159,24 @@
       </div>
     </div>
     
+    <!-- 底部操作菜单 -->
+    <div v-if="actionMenu.visible" class="action-menu-overlay" @click="actionMenu.visible = false">
+      <div class="action-menu">
+        <button class="action-btn edit" @click="editHabit(actionMenu.habit)">
+          <span class="material-icons">edit</span>
+          <span>修改</span>
+        </button>
+        <button class="action-btn delete" @click="confirmDelete(actionMenu.habit.id)">
+          <span class="material-icons">delete</span>
+          <span>删除</span>
+        </button>
+        <button class="action-btn cancel" @click="actionMenu.visible = false">
+          <span class="material-icons">close</span>
+          <span>取消</span>
+        </button>
+      </div>
+    </div>
+    
     <!-- 确认删除对话框 -->
     <div v-if="deleteConfirm.visible" class="modal-overlay">
       <div class="modal-content card">
@@ -196,6 +217,12 @@ const imageViewer = ref({
 const deleteConfirm = ref({
   visible: false,
   habitId: null
+})
+
+// 操作菜单状态
+const actionMenu = ref({
+  visible: false,
+  habit: null
 })
 
 // 初始化
@@ -288,7 +315,23 @@ async function deleteHabit() {
   if (result.success) {
     deleteConfirm.value.visible = false
     deleteConfirm.value.habitId = null
+    actionMenu.value.visible = false
   }
+}
+
+// 打开操作菜单
+function openActionMenu(habit) {
+  actionMenu.value = {
+    visible: true,
+    habit
+  }
+}
+
+// 编辑习惯
+function editHabit(habit) {
+  if (!habit) return
+  router.push(`/habits/edit/${habit.id}`)
+  actionMenu.value.visible = false
 }
 </script>
 
@@ -528,6 +571,76 @@ async function deleteHabit() {
   justify-content: flex-end;
   gap: 12px;
   margin-top: 16px;
+}
+
+/* 更多按钮 */
+.more-btn {
+  background: none;
+  border: none;
+  color: #666;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.more-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* 底部操作菜单 */
+.action-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.action-menu {
+  width: 100%;
+  background-color: white;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: none;
+  background: none;
+  text-align: left;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.action-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.action-btn.edit {
+  color: #2196F3;
+}
+
+.action-btn.delete {
+  color: #F44336;
+}
+
+.action-btn.cancel {
+  color: #666;
+  border-top: 1px solid #eee;
+  margin-top: 8px;
+  padding-top: 16px;
 }
 
 /* 加载指示器 */
