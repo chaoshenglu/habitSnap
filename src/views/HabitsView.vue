@@ -552,9 +552,10 @@ function editHabit(habit) {
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   z-index: 1000;
+  padding-bottom: 60px; /* 添加底部内边距，避免被底部导航栏遮挡 */
 }
 
 .modal-content {
@@ -607,6 +608,7 @@ function editHabit(habit) {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-bottom: 60px;
 }
 
 .action-btn {
