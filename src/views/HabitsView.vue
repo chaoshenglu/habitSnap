@@ -90,7 +90,6 @@
             <span class="habit-tag" :class="`habit-tag-${habit.type}`">
               {{ habitTypeText(habit.type) }}
             </span>
-            <span class="habit-date">{{ formatDate(habit.habit_date) }}</span>
           </div>
           
           <div v-if="habit.image_urls && habit.image_urls.length > 0" class="habit-images">
@@ -120,12 +119,15 @@
           
           <p v-if="habit.remark" class="habit-remark">{{ habit.remark }}</p>
           
-          <button 
-            class="btn btn-danger delete-btn" 
-            @click="confirmDelete(habit.id)"
-          >
-            删除
-          </button>
+          <div class="habit-footer">
+            <button 
+              class="btn btn-danger delete-btn" 
+              @click="confirmDelete(habit.id)"
+            >
+              删除
+            </button>
+            <span class="habit-date">{{ formatDate(habit.habit_date) }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -393,6 +395,18 @@ async function deleteHabit() {
 .habit-date {
   font-size: 0.875rem;
   color: #666;
+}
+
+.habit-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.habit-footer .habit-date {
+  font-style: italic;
+  text-align: right;
 }
 
 .habit-images {
