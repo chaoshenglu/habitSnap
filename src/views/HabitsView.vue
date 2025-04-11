@@ -3,41 +3,41 @@
     <div class="navbar">
       <h1 class="navbar-brand">习惯追踪</h1>
     </div>
-    
+
     <div class="container">
       <div class="filter-section card mb-2">
         <div class="form-group">
           <div class="type-filter">
-            <button 
-              class="type-btn" 
+            <button
+              class="type-btn"
               :class="{ active: !habitsStore.filters.type }"
               @click="habitsStore.updateFilters({ type: null })"
             >
               全部
             </button>
-            <button 
-              class="type-btn sleep" 
+            <button
+              class="type-btn sleep"
               :class="{ active: habitsStore.filters.type === 'sleep' }"
               @click="habitsStore.updateFilters({ type: 'sleep' })"
             >
               睡眠
             </button>
-            <button 
-              class="type-btn diet" 
+            <button
+              class="type-btn diet"
               :class="{ active: habitsStore.filters.type === 'diet' }"
               @click="habitsStore.updateFilters({ type: 'diet' })"
             >
               饮食
             </button>
-            <button 
-              class="type-btn exercise" 
+            <button
+              class="type-btn exercise"
               :class="{ active: habitsStore.filters.type === 'exercise' }"
               @click="habitsStore.updateFilters({ type: 'exercise' })"
             >
               锻炼
             </button>
-            <button 
-              class="type-btn meditation" 
+            <button
+              class="type-btn meditation"
               :class="{ active: habitsStore.filters.type === 'meditation' }"
               @click="habitsStore.updateFilters({ type: 'meditation' })"
             >
@@ -45,49 +45,68 @@
             </button>
           </div>
         </div>
-        
+
         <div class="form-group">
           <label class="form-label">日期范围</label>
-          <div class="quick-date-buttons">
-            <button class="btn btn-secondary" @click="setQuickDate('yesterday')">昨天</button>
-            <button class="btn btn-secondary" @click="setQuickDate('today')">今天</button>
-            <button class="btn btn-secondary" @click="setQuickDate('dayBeforeYesterday')">前天</button>
-          </div>
+
           <div class="date-filter">
-            <input 
-              type="date" 
-              class="form-control" 
-              v-model="startDate" 
+            <input
+              type="date"
+              class="form-control"
+              v-model="startDate"
               @change="updateDateFilter"
-            >
+            />
             <span class="date-separator">至</span>
-            <input 
-              type="date" 
-              class="form-control" 
-              v-model="endDate" 
+            <input
+              type="date"
+              class="form-control"
+              v-model="endDate"
               @change="updateDateFilter"
-            >
+            />
           </div>
         </div>
-        
-        <button class="btn btn-secondary" @click="habitsStore.resetFilters()">
-          重置筛选
-        </button>
+        <div class="quick-date-buttons">
+          <button
+            class="btn btn-secondary ml-10"
+            @click="setQuickDate('dayBeforeYesterday')"
+          >
+            前天
+          </button>
+          <button class="btn btn-secondary" @click="setQuickDate('yesterday')">
+            昨天
+          </button>
+          <button
+            class="btn btn-secondary ml-10"
+            @click="setQuickDate('today')"
+          >
+            今天
+          </button>
+          <button
+            class="btn btn-secondary ml-10"
+            @click="habitsStore.resetFilters()"
+          >
+            重置筛选
+          </button>
+        </div>
       </div>
-      
+
       <!-- 习惯列表 -->
       <div v-if="habitsStore.loading" class="loading-indicator">
         <div class="spinner"></div>
         <p>加载中...</p>
       </div>
-      
+
       <div v-else-if="habitsStore.habits.length === 0" class="empty-state card">
         <p>暂无习惯记录</p>
         <p>点击下方按钮添加新记录</p>
       </div>
-      
+
       <div v-else class="habits-list">
-        <div v-for="habit in habitsStore.habits" :key="habit.id" class="habit-card card">
+        <div
+          v-for="habit in habitsStore.habits"
+          :key="habit.id"
+          class="habit-card card"
+        >
           <div class="habit-header">
             <span class="habit-tag" :class="`habit-tag-${habit.type}`">
               {{ habitTypeText(habit.type) }}
@@ -96,12 +115,15 @@
               <span class="material-icons">more_vert</span>
             </button>
           </div>
-          
-          <div v-if="habit.image_urls && habit.image_urls.length > 0" class="habit-images">
+
+          <div
+            v-if="habit.image_urls && habit.image_urls.length > 0"
+            class="habit-images"
+          >
             <div class="image-grid">
-              <div 
-                v-for="(url, index) in habit.image_urls" 
-                :key="index" 
+              <div
+                v-for="(url, index) in habit.image_urls"
+                :key="index"
                 class="image-item"
                 @click="openImageViewer(habit.image_urls, index)"
               >
@@ -109,21 +131,22 @@
               </div>
             </div>
           </div>
-          
+
           <div v-if="habit.score" class="habit-score">
             <span class="score-label">评分：</span>
             <div class="rating">
-              <span 
-                v-for="i in 5" 
-                :key="i" 
+              <span
+                v-for="i in 5"
+                :key="i"
                 class="rating-star"
                 :class="{ active: i <= habit.score }"
-              >★</span>
+                >★</span
+              >
             </div>
           </div>
-          
+
           <p v-if="habit.remark" class="habit-remark">{{ habit.remark }}</p>
-          
+
           <div class="habit-footer">
             <div></div>
             <span class="habit-date">{{ formatDate(habit.habit_date) }}</span>
@@ -131,38 +154,54 @@
         </div>
       </div>
     </div>
-    
+
     <!-- 图片查看器 -->
-    <div v-if="imageViewer.visible" class="image-viewer" @click="closeImageViewer">
+    <div
+      v-if="imageViewer.visible"
+      class="image-viewer"
+      @click="closeImageViewer"
+    >
       <div class="image-viewer-content" @click.stop>
         <img :src="imageViewer.currentImage" alt="习惯图片" />
         <div class="image-viewer-controls">
-          <button 
-            class="btn btn-secondary" 
-            @click="prevImage" 
+          <button
+            class="btn btn-secondary"
+            @click="prevImage"
             :disabled="imageViewer.currentIndex === 0"
           >
             上一张
           </button>
-          <span>{{ imageViewer.currentIndex + 1 }} / {{ imageViewer.images.length }}</span>
-          <button 
-            class="btn btn-secondary" 
-            @click="nextImage" 
-            :disabled="imageViewer.currentIndex === imageViewer.images.length - 1"
+          <span
+            >{{ imageViewer.currentIndex + 1 }} /
+            {{ imageViewer.images.length }}</span
+          >
+          <button
+            class="btn btn-secondary"
+            @click="nextImage"
+            :disabled="
+              imageViewer.currentIndex === imageViewer.images.length - 1
+            "
           >
             下一张
           </button>
         </div>
       </div>
     </div>
-    
+
     <!-- 底部操作菜单 -->
-    <div v-if="actionMenu.visible" class="action-menu-overlay" @click="actionMenu.visible = false">
+    <div
+      v-if="actionMenu.visible"
+      class="action-menu-overlay"
+      @click="actionMenu.visible = false"
+    >
       <div class="action-menu">
         <button class="action-btn edit" @click="editHabit(actionMenu.habit)">
           修改
         </button>
-        <button class="action-btn delete" @click="confirmDelete(actionMenu.habit.id)">
+        <button
+          class="action-btn delete"
+          @click="confirmDelete(actionMenu.habit.id)"
+        >
           删除
         </button>
         <button class="action-btn cancel" @click="actionMenu.visible = false">
@@ -170,14 +209,16 @@
         </button>
       </div>
     </div>
-    
+
     <!-- 确认删除对话框 -->
     <div v-if="deleteConfirm.visible" class="modal-overlay">
       <div class="modal-content card">
         <h3>确认删除</h3>
         <p>确定要删除这条习惯记录吗？此操作不可撤销。</p>
         <div class="modal-actions">
-          <button class="btn" @click="deleteConfirm.visible = false">取消</button>
+          <button class="btn" @click="deleteConfirm.visible = false">
+            取消
+          </button>
           <button class="btn btn-danger" @click="deleteHabit">删除</button>
         </div>
       </div>
@@ -186,98 +227,98 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '../stores/auth'
-import { useHabitsStore } from '../stores/habits'
+import { ref, onMounted, computed } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth";
+import { useHabitsStore } from "../stores/habits";
 
-const router = useRouter()
-const authStore = useAuthStore()
-const habitsStore = useHabitsStore()
+const router = useRouter();
+const authStore = useAuthStore();
+const habitsStore = useHabitsStore();
 
 // 日期筛选
-const startDate = ref('')
-const endDate = ref('')
+const startDate = ref("");
+const endDate = ref("");
 
 // 图片查看器状态
 const imageViewer = ref({
   visible: false,
   images: [],
   currentIndex: 0,
-  currentImage: ''
-})
+  currentImage: "",
+});
 
 // 删除确认对话框状态
 const deleteConfirm = ref({
   visible: false,
-  habitId: null
-})
+  habitId: null,
+});
 
 // 操作菜单状态
 const actionMenu = ref({
   visible: false,
-  habit: null
-})
+  habit: null,
+});
 
 // 初始化
 onMounted(async () => {
   // 确保用户已登录
   if (!authStore.isAuthenticated) {
-    await authStore.initialize()
+    await authStore.initialize();
   }
-  
+
   // 加载习惯数据
-  habitsStore.fetchHabits()
-})
+  habitsStore.fetchHabits();
+});
 
 // 设置快捷日期
 function setQuickDate(type) {
-  const today = new Date()
-  const date = new Date(today)
-  
-  if (type === 'today') {
-    date.setDate(today.getDate())
-  } else if (type === 'yesterday') {
-    date.setDate(today.getDate() - 1)
-  } else if (type === 'dayBeforeYesterday') {
-    date.setDate(today.getDate() - 2)
+  const today = new Date();
+  const date = new Date(today);
+
+  if (type === "today") {
+    date.setDate(today.getDate());
+  } else if (type === "yesterday") {
+    date.setDate(today.getDate() - 1);
+  } else if (type === "dayBeforeYesterday") {
+    date.setDate(today.getDate() - 2);
   }
-  
-  const dateStr = date.toISOString().split('T')[0]
-  startDate.value = dateStr
-  endDate.value = dateStr
-  updateDateFilter()
+
+  const dateStr = date.toISOString().split("T")[0];
+  startDate.value = dateStr;
+  endDate.value = dateStr;
+  updateDateFilter();
 }
 
 // 更新日期筛选
 function updateDateFilter() {
   habitsStore.updateFilters({
     startDate: startDate.value || null,
-    endDate: endDate.value || null
-  })
+    endDate: endDate.value || null,
+  });
 }
 
 // 格式化日期
 function formatDate(dateString) {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('zh-CN', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
+  const date = new Date(dateString);
+  return date.toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 // 习惯类型文本
 function habitTypeText(type) {
   const types = {
-    sleep: '睡眠',
-    diet: '饮食',
-    exercise: '锻炼',
-    meditation: '冥想'
-  }
-  return types[type] || type
+    sleep: "睡眠",
+    diet: "饮食",
+    exercise: "锻炼",
+    meditation: "冥想",
+  };
+  return types[type] || type;
 }
 
 // 打开图片查看器
@@ -286,28 +327,30 @@ function openImageViewer(images, index) {
     visible: true,
     images,
     currentIndex: index,
-    currentImage: images[index]
-  }
+    currentImage: images[index],
+  };
 }
 
 // 关闭图片查看器
 function closeImageViewer() {
-  imageViewer.value.visible = false
+  imageViewer.value.visible = false;
 }
 
 // 查看上一张图片
 function prevImage() {
   if (imageViewer.value.currentIndex > 0) {
-    imageViewer.value.currentIndex--
-    imageViewer.value.currentImage = imageViewer.value.images[imageViewer.value.currentIndex]
+    imageViewer.value.currentIndex--;
+    imageViewer.value.currentImage =
+      imageViewer.value.images[imageViewer.value.currentIndex];
   }
 }
 
 // 查看下一张图片
 function nextImage() {
   if (imageViewer.value.currentIndex < imageViewer.value.images.length - 1) {
-    imageViewer.value.currentIndex++
-    imageViewer.value.currentImage = imageViewer.value.images[imageViewer.value.currentIndex]
+    imageViewer.value.currentIndex++;
+    imageViewer.value.currentImage =
+      imageViewer.value.images[imageViewer.value.currentIndex];
   }
 }
 
@@ -315,20 +358,20 @@ function nextImage() {
 function confirmDelete(habitId) {
   deleteConfirm.value = {
     visible: true,
-    habitId
-  }
+    habitId,
+  };
 }
 
 // 删除习惯
 async function deleteHabit() {
-  if (!deleteConfirm.value.habitId) return
-  
-  const result = await habitsStore.deleteHabit(deleteConfirm.value.habitId)
-  
+  if (!deleteConfirm.value.habitId) return;
+
+  const result = await habitsStore.deleteHabit(deleteConfirm.value.habitId);
+
   if (result.success) {
-    deleteConfirm.value.visible = false
-    deleteConfirm.value.habitId = null
-    actionMenu.value.visible = false
+    deleteConfirm.value.visible = false;
+    deleteConfirm.value.habitId = null;
+    actionMenu.value.visible = false;
   }
 }
 
@@ -336,15 +379,15 @@ async function deleteHabit() {
 function openActionMenu(habit) {
   actionMenu.value = {
     visible: true,
-    habit
-  }
+    habit,
+  };
 }
 
 // 编辑习惯
 function editHabit(habit) {
-  if (!habit) return
-  router.push(`/habits/edit/${habit.id}`)
-  actionMenu.value.visible = false
+  if (!habit) return;
+  router.push(`/habits/edit/${habit.id}`);
+  actionMenu.value.visible = false;
 }
 </script>
 
@@ -382,19 +425,19 @@ function editHabit(habit) {
 }
 
 .type-btn.sleep.active {
-  background-color: #0288D1;
+  background-color: #0288d1;
 }
 
 .type-btn.diet.active {
-  background-color: #388E3C;
+  background-color: #388e3c;
 }
 
 .type-btn.exercise.active {
-  background-color: #F57C00;
+  background-color: #f57c00;
 }
 
 .type-btn.meditation.active {
-  background-color: #8E24AA;
+  background-color: #8e24aa;
 }
 
 .date-filter {
@@ -506,7 +549,7 @@ function editHabit(habit) {
 }
 
 .rating-star.active {
-  color: #FFB400;
+  color: #ffb400;
 }
 
 .habit-remark {
@@ -643,11 +686,11 @@ function editHabit(habit) {
 }
 
 .action-btn.edit {
-  color: #2196F3;
+  color: #2196f3;
 }
 
 .action-btn.delete {
-  color: #F44336;
+  color: #f44336;
 }
 
 .action-btn.cancel {
@@ -677,7 +720,9 @@ function editHabit(habit) {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* 空状态 */
