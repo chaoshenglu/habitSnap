@@ -2,9 +2,6 @@
   <div class="habits-page">
     <div class="navbar">
       <h1 class="navbar-brand">习惯追踪</h1>
-      <button class="btn" @click="authStore.logout(); router.push('/login')">
-        <span class="material-icons">logout</span>
-      </button>
     </div>
     
     <div class="container">
