@@ -120,12 +120,7 @@
           <p v-if="habit.remark" class="habit-remark">{{ habit.remark }}</p>
           
           <div class="habit-footer">
-            <button 
-              class="btn btn-danger delete-btn" 
-              @click="confirmDelete(habit.id)"
-            >
-              删除
-            </button>
+            <div></div>
             <span class="habit-date">{{ formatDate(habit.habit_date) }}</span>
           </div>
         </div>
