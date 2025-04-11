@@ -67,12 +67,15 @@
         </div>
         <div class="quick-date-buttons">
           <button
-            class="btn btn-secondary ml-10"
+            class="btn btn-secondary"
             @click="setQuickDate('dayBeforeYesterday')"
           >
             前天
           </button>
-          <button class="btn btn-secondary" @click="setQuickDate('yesterday')">
+          <button
+            class="btn btn-secondary ml-10"
+            @click="setQuickDate('yesterday')"
+          >
             昨天
           </button>
           <button
