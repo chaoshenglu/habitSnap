@@ -163,16 +163,13 @@
     <div v-if="actionMenu.visible" class="action-menu-overlay" @click="actionMenu.visible = false">
       <div class="action-menu">
         <button class="action-btn edit" @click="editHabit(actionMenu.habit)">
-          <span class="material-icons">edit</span>
-          <span>修改</span>
+          修改
         </button>
         <button class="action-btn delete" @click="confirmDelete(actionMenu.habit.id)">
-          <span class="material-icons">delete</span>
-          <span>删除</span>
+          删除
         </button>
         <button class="action-btn cancel" @click="actionMenu.visible = false">
-          <span class="material-icons">close</span>
-          <span>取消</span>
+          取消
         </button>
       </div>
     </div>
@@ -614,14 +611,15 @@ function editHabit(habit) {
 
 .action-btn {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 12px;
   padding: 16px;
   border: none;
   background: none;
-  text-align: left;
+  text-align: center;
   border-radius: 8px;
   font-size: 16px;
+  width: 100%;
 }
 
 .action-btn:hover {
