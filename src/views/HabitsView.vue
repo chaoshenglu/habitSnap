@@ -48,6 +48,11 @@
         
         <div class="form-group">
           <label class="form-label">日期范围</label>
+          <div class="quick-date-buttons">
+            <button class="btn btn-secondary" @click="setQuickDate('yesterday')">昨天</button>
+            <button class="btn btn-secondary" @click="setQuickDate('today')">今天</button>
+            <button class="btn btn-secondary" @click="setQuickDate('dayBeforeYesterday')">前天</button>
+          </div>
           <div class="date-filter">
             <input 
               type="date" 
@@ -224,6 +229,25 @@ onMounted(async () => {
   // 加载习惯数据
   habitsStore.fetchHabits()
 })
+
+// 设置快捷日期
+function setQuickDate(type) {
+  const today = new Date()
+  const date = new Date(today)
+  
+  if (type === 'today') {
+    date.setDate(today.getDate())
+  } else if (type === 'yesterday') {
+    date.setDate(today.getDate() - 1)
+  } else if (type === 'dayBeforeYesterday') {
+    date.setDate(today.getDate() - 2)
+  }
+  
+  const dateStr = date.toISOString().split('T')[0]
+  startDate.value = dateStr
+  endDate.value = dateStr
+  updateDateFilter()
+}
 
 // 更新日期筛选
 function updateDateFilter() {
