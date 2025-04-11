@@ -76,7 +76,7 @@
 
         <!-- 评分 -->
         <div class="form-group">
-          <label class="form-label">评分 (1-5)</label>
+          <label class="form-label">评分</label>
           <div class="rating-selector">
             <div
               v-for="i in 5"
