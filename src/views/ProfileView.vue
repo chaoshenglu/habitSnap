@@ -69,7 +69,7 @@
           </div>
         </div>
       
-      <button class="btn btn-danger w-100 mt-3" @click="handleLogout">
+      <button class="btn w-100 mt-3" style="background-color: var(--primary-color);color: white;" @click="handleLogout">
         退出登录
       </button>
     </div>
@@ -370,7 +370,7 @@ async function handleLogout() {
 }
 
 .stat-item.active {
-  background-color: rgba(var(--primary-color), 0.1);
+  background-color: var(--primary-color);
 }
 
 .stat-value {
