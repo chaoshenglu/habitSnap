@@ -59,7 +59,7 @@ export const useHabitsStore = defineStore('habits', () => {
   }
   
   // 创建新习惯记录
-  async function createHabit({ type, remark, imageUrls, score }) {
+  async function createHabit({ type, remark, imageUrls, score, habit_date }) {
     if (!authStore.isAuthenticated) return { success: false, error: 'User not authenticated' }
     
     loading.value = true
@@ -72,7 +72,7 @@ export const useHabitsStore = defineStore('habits', () => {
         remark: remark || null,
         image_urls: imageUrls || [],
         score: score || null,
-        habit_date: new Date().toISOString()
+        habit_date: habit_date
       }
       
       const { data, error: insertError } = await supabase
