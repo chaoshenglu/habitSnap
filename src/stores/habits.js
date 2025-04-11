@@ -45,7 +45,7 @@ export const useHabitsStore = defineStore('habits', () => {
         endDate.setHours(23, 59, 59)
         query = query.lte('habit_date', endDate.toISOString())
       }
-      
+      console.log('filters.value :', filters.value);
       const { data, error: fetchError } = await query
       
       if (fetchError) throw fetchError
