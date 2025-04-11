@@ -16,10 +16,12 @@
           <h2 class="profile-email">{{ authStore.user?.email }}</h2>
         </div>
         
-        <div class="profile-stats">
+      </div>
+
+      <div class="profile-stats">
           <div class="stat-item">
             <span class="stat-value">{{ habitsStore.habits.length }}</span>
-            <span class="stat-label">总记录</span>
+            <span class="stat-label">总数</span>
           </div>
           <div class="stat-item">
             <span class="stat-value">{{ habitsStore.habitsByType.sleep.length }}</span>
@@ -38,7 +40,6 @@
             <span class="stat-label">冥想</span>
           </div>
         </div>
-      </div>
       
       <button class="btn btn-danger w-100 mt-3" @click="handleLogout">
         退出登录
@@ -136,7 +137,7 @@ async function handleLogout() {
 
 .profile-stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 16px;
 }
 
@@ -146,7 +147,7 @@ async function handleLogout() {
   align-items: center;
   padding: 12px;
   border-radius: var(--border-radius);
-  background-color: var(--light-bg);
+  background-color: #fff;
 }
 
 .stat-value {
