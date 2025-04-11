@@ -8,11 +8,8 @@
     </div>
     
     <div class="container">
-      <!-- 筛选区域 -->
       <div class="filter-section card mb-2">
-        <h3 class="mb-1">筛选</h3>
         <div class="form-group">
-          <label class="form-label">习惯类型</label>
           <div class="type-filter">
             <button 
               class="type-btn" 
