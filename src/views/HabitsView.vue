@@ -386,19 +386,17 @@ function editHabit(habit) {
   flex-shrink: 0;
 }
 
-/* 添加以下样式修复日期选择器超出屏幕的问题 */
 .date-filter {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
-@media (min-width: 480px) {
-  .date-filter {
-    flex-direction: row;
-    align-items: center;
-  }
+.date-filter .form-control {
+  flex: 1;
+  min-width: 120px;
 }
 
 .date-filter .form-control {
