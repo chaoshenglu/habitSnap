@@ -261,13 +261,17 @@ async function saveHabit() {
       imageUrls = await uploadImages(selectedFiles.value, authStore.user.id)
     }
     
-    // 创建习惯记录，添加选择的日期
+    // 创建习惯记录，合并选择的日期和当前时间
+    const now = new Date()
+    const habitDate = new Date(selectedDate.value)
+    habitDate.setHours(now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds())
+    
     const newHabit = {
       type: habitType.value,
       remark: habitRemark.value,
       imageUrls,
       score: habitScore.value,
-      habit_date: selectedDate.value.toISOString() // 使用选择的日期
+      habit_date: habitDate.toISOString() // 使用选择的日期和当前时间
     }
     console.log('New habit:', newHabit)
     const result = await habitsStore.createHabit(newHabit)
