@@ -108,7 +108,7 @@
             </div>
           </div>
 
-          <p v-if="habit.remark" class="habit-remark">{{ habit.remark }}</p>
+          <p v-if="habit.remark" class="habit-remark">评语：{{ habit.remark }}</p>
 
           <div class="habit-footer">
             <div></div>
