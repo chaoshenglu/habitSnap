@@ -7,6 +7,7 @@
         @click="saveHabit"
         type="submit"
         :disabled="isSubmitting || !isFormValid"
+        class="save-button"
       >
         {{ isSubmitting ? "保存中..." : "保存" }}
       </button>
@@ -326,6 +327,26 @@ async function saveHabit() {
 .navbar-title {
   font-size: 1.25rem;
   margin: 0;
+}
+
+.save-button {
+  padding: 4px 8px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.save-button:hover:not(:disabled) {
+  background-color: var(--primary-hover-color);
+}
+
+.save-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 /* 日期选择器样式 */
