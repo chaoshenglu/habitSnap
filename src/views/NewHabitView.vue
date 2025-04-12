@@ -3,7 +3,9 @@
     <div class="navbar">
       <div></div>
       <h1 class="navbar-title">添加习惯记录</h1>
-      <div></div>
+      <button type="submit" :disabled="isSubmitting || !isFormValid">
+        {{ isSubmitting ? "保存中..." : "保存" }}
+      </button>
     </div>
     <div
       v-if="showDatePicker"
@@ -32,6 +34,13 @@
         <div class="form-group">
           <label class="form-label">创建时间：</label>
           <div
+            style="
+              margin-bottom: 16px;
+              background-color: white;
+              padding: 16px;
+              border-radius: var(--border-radius);
+              border: 1px solid #ddd;
+            "
             class="navbar-title date-selector"
             @click="showDatePicker = true"
           >
@@ -142,14 +151,6 @@
         <div v-if="error" class="error-message mb-2">
           {{ error }}
         </div>
-
-        <button
-          type="submit"
-          class="btn btn-primary w-100 mt-2"
-          :disabled="isSubmitting || !isFormValid"
-        >
-          {{ isSubmitting ? "保存中..." : "保存" }}
-        </button>
       </form>
     </div>
   </div>
