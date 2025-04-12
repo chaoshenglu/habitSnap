@@ -303,7 +303,8 @@ function nextImage() {
 
 .habit-detail-remark p {
   margin: 0;
-  white-space: pre-wrap;
+  word-wrap: break-word;
+  white-space: pre-line;
 }
 
 /* 图片查看器 */
