@@ -31,10 +31,13 @@
       <form @submit.prevent="saveHabit" class="habit-form">
         <div class="form-group">
           <label class="form-label">创建时间：</label>
-          <div class="navbar-title date-selector" @click="showDatePicker = true">
-        <span class="material-icons date-icon">event</span>
-        {{ formatDate(selectedDate) }}
-      </div>
+          <div
+            class="navbar-title date-selector"
+            @click="showDatePicker = true"
+          >
+            <span class="material-icons date-icon">event</span>
+            {{ formatDate(selectedDate) }}
+          </div>
           <label class="form-label">习惯类型：</label>
           <div class="type-selector">
             <div
