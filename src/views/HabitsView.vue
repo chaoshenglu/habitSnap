@@ -71,9 +71,12 @@
           class="habit-card card"
         >
           <div class="habit-header">
-            <span class="habit-tag" :class="`habit-tag-${habit.type}`">
-              {{ habitTypeText(habit.type) }}
-            </span>
+            <div>
+              <span class="habit-date">{{ formatDate(habit.habit_date) }}</span>
+              <span class="habit-tag" :class="`habit-tag-${habit.type}`">
+                {{ habitTypeText(habit.type) }}
+              </span>
+            </div>
             <button class="more-btn" @click.stop="openActionMenu(habit)">
               <span class="material-icons">more_vert</span>
             </button>
@@ -109,12 +112,9 @@
           </div>
 
           <div @click="goToDetailPage(habit)">
-            <p v-if="habit.remark" class="habit-remark">评语：{{ habit.remark }}</p>
-
-          <div class="habit-footer">
-            <div></div>
-            <span class="habit-date">{{ formatDate(habit.habit_date) }}</span>
-          </div>
+            <p v-if="habit.remark" class="habit-remark">
+              评语：{{ habit.remark }}
+            </p>
           </div>
         </div>
       </div>
@@ -243,9 +243,9 @@ onMounted(async () => {
   const today = new Date();
   const dayBeforeYesterday = new Date(today);
   dayBeforeYesterday.setDate(today.getDate() - 2);
-  
-  startDate.value = dayBeforeYesterday.toISOString().split('T')[0];
-  endDate.value = today.toISOString().split('T')[0];
+
+  startDate.value = dayBeforeYesterday.toISOString().split("T")[0];
+  endDate.value = today.toISOString().split("T")[0];
   updateDateFilter();
 
   // 加载习惯数据
