@@ -479,8 +479,6 @@ function editHabit(habit) {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 12px;
-  white-space: pre-wrap;
 }
 
 .delete-btn {
