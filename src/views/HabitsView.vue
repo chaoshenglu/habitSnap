@@ -476,6 +476,9 @@ function editHabit(habit) {
 }
 
 .habit-remark {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin-bottom: 12px;
   white-space: pre-wrap;
 }
