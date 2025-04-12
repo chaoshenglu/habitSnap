@@ -18,7 +18,9 @@
 
       <!-- 添加习惯评分折线图 -->
       <div class="card chart-card">
-        <div></div>
+        <div>
+          <!-- 近7天 | 近30天 -->
+        </div>
         <div class="chart-container">
           <Line
             v-if="chartData"
