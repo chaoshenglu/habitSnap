@@ -22,7 +22,7 @@
       <div v-else class="habit-detail card">
         <div class="habit-header">
           <span class="habit-date">{{ formatDate(habit.habit_date) }}</span>
-          <span class="habit-tag ml-5px" :class="`habit-tag-${habit.type}`">
+          <span class="habit-tag" :class="`habit-tag-${habit.type}`">
             {{ habitTypeText(habit.type) }}
           </span>
         </div>
