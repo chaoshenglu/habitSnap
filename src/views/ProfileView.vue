@@ -18,7 +18,7 @@
 
       <!-- 添加习惯评分折线图 -->
       <div class="card chart-card">
-        <h3 class="chart-title">习惯评分趋势</h3>
+        <div></div>
         <div class="chart-container">
           <Line
             v-if="chartData"
