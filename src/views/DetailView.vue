@@ -117,8 +117,14 @@ const imageViewer = ref({
 onMounted(async () => {
   const habitId = route.params.id;
   if (habitId) {
-    const habits = await habitsStore.fetchHabits();
-    habit.value = habits.find(h => h.id === habitId);
+    try {
+      const habits = await habitsStore.fetchHabits();
+      if (habits) {
+        habit.value = habits.find(h => h.id === habitId);
+      }
+    } catch (err) {
+      console.error('Error fetching habit:', err);
+    }
   }
   loading.value = false;
 });

@@ -108,7 +108,7 @@
             </div>
           </div>
 
-          <div @click="goToDetailPage">
+          <div @click="goToDetailPage(habit)">
             <p v-if="habit.remark" class="habit-remark">评语：{{ habit.remark }}</p>
 
           <div class="habit-footer">
