@@ -237,6 +237,15 @@ onMounted(async () => {
     await authStore.initialize();
   }
 
+  // 设置默认日期范围
+  const today = new Date();
+  const dayBeforeYesterday = new Date(today);
+  dayBeforeYesterday.setDate(today.getDate() - 2);
+  
+  startDate.value = dayBeforeYesterday.toISOString().split('T')[0];
+  endDate.value = today.toISOString().split('T')[0];
+  updateDateFilter();
+
   // 加载习惯数据
   habitsStore.fetchHabits();
 });
