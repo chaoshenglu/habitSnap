@@ -52,8 +52,7 @@
         </div>
 
         <div v-if="habit.remark" class="habit-remark">
-          <h3>评语</h3>
-          <p>{{ habit.remark }}</p>
+          <p>评语：{{ habit.remark }}</p>
         </div>
       </div>
     </div>
