@@ -21,13 +21,16 @@
 
       <div v-else class="habit-detail card">
         <div class="habit-header">
-          <span class="habit-tag" :class="`habit-tag-${habit.type}`">
+          <span class="habit-date">{{ formatDate(habit.habit_date) }}</span>
+          <span class="habit-tag ml-5px" :class="`habit-tag-${habit.type}`">
             {{ habitTypeText(habit.type) }}
           </span>
-          <span class="habit-date">{{ formatDate(habit.habit_date) }}</span>
         </div>
 
-        <div v-if="habit.image_urls && habit.image_urls.length > 0" class="habit-images">
+        <div
+          v-if="habit.image_urls && habit.image_urls.length > 0"
+          class="habit-images"
+        >
           <div class="image-grid">
             <div
               v-for="(url, index) in habit.image_urls"
@@ -48,7 +51,8 @@
               :key="i"
               class="rating-star"
               :class="{ active: i <= habit.score }"
-            >★</span>
+              >★</span
+            >
           </div>
         </div>
 
@@ -74,11 +78,16 @@
           >
             上一张
           </button>
-          <span>{{ imageViewer.currentIndex + 1 }} / {{ imageViewer.images.length }}</span>
+          <span
+            >{{ imageViewer.currentIndex + 1 }} /
+            {{ imageViewer.images.length }}</span
+          >
           <button
             class="btn btn-secondary"
             @click="nextImage"
-            :disabled="imageViewer.currentIndex === imageViewer.images.length - 1"
+            :disabled="
+              imageViewer.currentIndex === imageViewer.images.length - 1
+            "
           >
             下一张
           </button>
@@ -96,9 +105,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import { useHabitsStore } from '../stores/habits';
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useHabitsStore } from "../stores/habits";
 
 const route = useRoute();
 const habitsStore = useHabitsStore();
@@ -110,7 +119,7 @@ const imageViewer = ref({
   visible: false,
   images: [],
   currentIndex: 0,
-  currentImage: '',
+  currentImage: "",
 });
 
 // 初始化
@@ -123,7 +132,7 @@ onMounted(async () => {
         habit.value = data;
       }
     } catch (err) {
-      console.error('Error fetching habit:', err);
+      console.error("Error fetching habit:", err);
     }
   }
   loading.value = false;
@@ -132,22 +141,22 @@ onMounted(async () => {
 // 格式化日期
 function formatDate(dateString) {
   const date = new Date(dateString);
-  return date.toLocaleDateString('zh-CN', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
+  return date.toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 }
 
 // 习惯类型文本
 function habitTypeText(type) {
   const types = {
-    sleep: '睡眠',
-    diet: '饮食',
-    exercise: '锻炼',
-    meditation: '冥想',
+    sleep: "睡眠",
+    diet: "饮食",
+    exercise: "锻炼",
+    meditation: "冥想",
   };
   return types[type] || type;
 }
@@ -232,10 +241,18 @@ function nextImage() {
   color: white;
 }
 
-.habit-tag-sleep { background-color: #2196f3; }
-.habit-tag-diet { background-color: #4caf50; }
-.habit-tag-exercise { background-color: #ff9800; }
-.habit-tag-meditation { background-color: #9c27b0; }
+.habit-tag-sleep {
+  background-color: #2196f3;
+}
+.habit-tag-diet {
+  background-color: #4caf50;
+}
+.habit-tag-exercise {
+  background-color: #ff9800;
+}
+.habit-tag-meditation {
+  background-color: #9c27b0;
+}
 
 .habit-date {
   font-size: 0.875rem;
