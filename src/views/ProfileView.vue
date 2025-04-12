@@ -19,7 +19,22 @@
       <!-- 添加习惯评分折线图 -->
       <div class="card chart-card">
         <div>
-          <!-- 近7天 | 近30天 -->
+          <div class="date-range-selector">
+            <button
+              class="date-btn"
+              :class="{ active: dateRange === 7 }"
+              @click="dateRange = 7"
+            >
+              近7天
+            </button>
+            <button
+              class="date-btn"
+              :class="{ active: dateRange === 30 }"
+              @click="dateRange = 30"
+            >
+              近30天
+            </button>
+          </div>
         </div>
         <div class="chart-container">
           <Line
@@ -94,7 +109,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import { useHabitsStore } from "../stores/habits";
@@ -126,6 +141,7 @@ const authStore = useAuthStore();
 const habitsStore = useHabitsStore();
 const chartData = ref(null);
 const selectedType = ref("all"); // 默认选择全部
+const dateRange = ref(7); // 默认显示最近7天数据
 
 const filteredChartData = computed(() => {
   if (!chartData.value) return null;
@@ -172,10 +188,10 @@ const chartOptions = {
 };
 
 function prepareChartData() {
-  // 获取最近7天的数据
+  // 获取最近dateRange.value天的数据
   const now = new Date();
   const dates = [];
-  for (let i = 6; i >= 0; i--) {
+  for (let i = dateRange.value - 1; i >= 0; i--) {
     const date = new Date(now);
     date.setDate(date.getDate() - i);
     dates.push(date.toISOString().split("T")[0]);
@@ -288,6 +304,11 @@ onMounted(async () => {
   chartData.value = prepareChartData();
 });
 
+// 监听dateRange变化，重新生成图表数据
+watch(dateRange, () => {
+  chartData.value = prepareChartData();
+});
+
 async function handleLogout() {
   await authStore.logout();
   router.push("/login");
@@ -373,6 +394,33 @@ async function handleLogout() {
   justify-content: center;
   height: 100%;
   color: #666;
+}
+
+.date-range-selector {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.date-btn {
+  padding: 6px 12px;
+  margin: 0 5px;
+  border: 1px solid var(--border-color);
+  background-color: white;
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.date-btn:hover {
+  background-color: var(--light-bg);
+}
+
+.date-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
 }
 
 .profile-stats {
