@@ -1,7 +1,7 @@
 <template>
   <div class="new-habit-page">
     <div class="navbar">
-      <div></div>
+      <img src="/src/assets/logo.svg" style="width: 26px" />
       <h1 class="navbar-title">添加习惯记录</h1>
       <button
         @click="saveHabit"
