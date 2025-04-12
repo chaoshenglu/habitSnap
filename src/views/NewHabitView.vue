@@ -1,16 +1,10 @@
 <template>
   <div class="new-habit-page">
     <div class="navbar">
-      <router-link to="/habits" class="back-btn">
-        <span class="material-icons">arrow_back</span>
-      </router-link>
-      <div class="navbar-title date-selector" @click="showDatePicker = true">
-        {{ formatDate(selectedDate) }}
-        <span class="material-icons date-icon">event</span>
-      </div>
+      <div></div>
+      <h1 class="navbar-title">添加习惯记录</h1>
+      <div></div>
     </div>
-
-    <!-- 日期选择器 -->
     <div
       v-if="showDatePicker"
       class="date-picker-overlay"
@@ -34,6 +28,10 @@
     </div>
 
     <div class="container">
+      <div class="navbar-title date-selector" @click="showDatePicker = true">
+        <span class="material-icons date-icon">event</span>
+        {{ formatDate(selectedDate) }}
+      </div>
       <form @submit.prevent="saveHabit" class="habit-form">
         <!-- 习惯类型选择 -->
         <div class="form-group">
