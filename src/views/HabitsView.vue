@@ -147,6 +147,13 @@
           >
             下一张
           </button>
+          <button
+            class="btn btn-close-viewer"
+            @click="closeImageViewer"
+            aria-label="关闭"
+          >
+            关闭
+          </button>
         </div>
       </div>
     </div>
@@ -522,6 +529,16 @@ function editHabit(habit) {
   width: 100%;
   padding: 16px;
   color: white;
+}
+
+.btn-close-viewer {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 /* 确认删除对话框 */
