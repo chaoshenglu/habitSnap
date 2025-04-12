@@ -74,7 +74,7 @@
           class="habit-card card"
         >
           <div class="habit-header">
-            <div>
+            <div @click="goToDetailPage(habit)">
               <span class="habit-date">{{ formatDate(habit.habit_date) }}</span>
               <span class="habit-tag ml-5" :class="`habit-tag-${habit.type}`">
                 {{ habitTypeText(habit.type) }}
