@@ -1,5 +1,5 @@
 <template>
-  <div class="new-habit-page">
+  <div class="edit-habit-page">
     <div class="navbar">
       <router-link to="/habits" class="back-btn">
         <span class="material-icons">arrow_back</span>
@@ -366,7 +366,7 @@ async function updateHabit() {
 </script>
 
 <style scoped>
-.new-habit-page {
+.edit-habit-page {
   padding-bottom: 16px;
 }
 
