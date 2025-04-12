@@ -108,11 +108,13 @@
             </div>
           </div>
 
-          <p v-if="habit.remark" class="habit-remark">评语：{{ habit.remark }}</p>
+          <div @click="goToDetailPage">
+            <p v-if="habit.remark" class="habit-remark">评语：{{ habit.remark }}</p>
 
           <div class="habit-footer">
             <div></div>
             <span class="habit-date">{{ formatDate(habit.habit_date) }}</span>
+          </div>
           </div>
         </div>
       </div>
@@ -249,6 +251,10 @@ onMounted(async () => {
   // 加载习惯数据
   habitsStore.fetchHabits();
 });
+
+function goToDetailPage() {
+  router.push("/habits/detail");
+}
 
 // 设置快捷日期
 function setQuickDate(type) {
