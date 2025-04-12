@@ -9,9 +9,7 @@
     <div class="container">
       <div class="card profile-card">
         <div class="profile-header">
-          <div class="profile-avatar">
-            <span class="material-icons">account_circle</span>
-          </div>
+          <img class="profile-avatar" src="/src/assets/head.png" />
           <h2 class="profile-email">{{ authStore.user?.email }}</h2>
         </div>
       </div>
@@ -357,11 +355,6 @@ async function handleLogout() {
   align-items: center;
   justify-content: center;
   margin-bottom: 16px;
-}
-
-.profile-avatar .material-icons {
-  font-size: 48px;
-  color: #666;
 }
 
 .profile-email {
