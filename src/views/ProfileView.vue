@@ -96,7 +96,6 @@ import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import { useHabitsStore } from "../stores/habits";
-// Fix the import statement
 import { Line } from "vue-chartjs";
 import {
   Chart as ChartJS,
@@ -126,28 +125,22 @@ const habitsStore = useHabitsStore();
 const chartData = ref(null);
 const selectedType = ref("all"); // 默认选择全部
 
-// 根据选择的类型过滤图表数据
 const filteredChartData = computed(() => {
   if (!chartData.value) return null;
 
-  // 如果选择全部，返回完整数据
   if (selectedType.value === "all") {
     return chartData.value;
   }
 
-  // 否则只返回选中类型的数据
   const filteredData = {
     labels: chartData.value.labels,
     datasets: chartData.value.datasets.filter((dataset) => {
-      // 根据标签匹配类型
       const typeMap = {
         睡眠: "sleep",
         饮食: "diet",
         锻炼: "exercise",
         冥想: "meditation",
       };
-
-      // 查找与选中类型匹配的数据集
       return Object.entries(typeMap).some(([label, type]) => {
         return dataset.label === label && type === selectedType.value;
       });
@@ -157,7 +150,6 @@ const filteredChartData = computed(() => {
   return filteredData;
 });
 
-// 图表配置
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
@@ -177,7 +169,6 @@ const chartOptions = {
   },
 };
 
-// 准备图表数据
 function prepareChartData() {
   // 获取最近7天的数据
   const now = new Date();
