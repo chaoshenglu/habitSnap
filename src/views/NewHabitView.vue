@@ -318,12 +318,6 @@ async function saveHabit() {
   padding: 16px;
 }
 
-.back-btn {
-  margin-right: 16px;
-  color: var(--text-color);
-  text-decoration: none;
-}
-
 .navbar-title {
   font-size: 1.25rem;
   margin: 0;
@@ -527,10 +521,6 @@ async function saveHabit() {
 .error-message {
   color: var(--danger-color);
   font-size: 0.875rem;
-}
-
-.w-100 {
-  width: 100%;
 }
 
 /* 添加底部安全区域，确保按钮不被底部导航栏遮挡 */
