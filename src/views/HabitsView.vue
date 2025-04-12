@@ -431,20 +431,7 @@ function editHabit(habit) {
 }
 
 .habit-date {
-  font-size: 0.875rem;
   color: #666;
-}
-
-.habit-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 12px;
-}
-
-.habit-footer .habit-date {
-  font-style: italic;
-  text-align: right;
 }
 
 .habit-images {
