@@ -287,6 +287,13 @@ function setQuickDate(type) {
 
 // 更新日期筛选
 function updateDateFilter() {
+  // 如果结束时间早于开始时间，则交换它们
+  if (new Date(endDate.value) < new Date(startDate.value)) {
+    const temp = startDate.value;
+    startDate.value = endDate.value;
+    endDate.value = temp;
+  }
+  // 更新过滤器
   habitsStore.updateFilters({
     startDate: startDate.value || null,
     endDate: endDate.value || null,
