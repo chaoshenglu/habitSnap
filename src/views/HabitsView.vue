@@ -1,7 +1,10 @@
 <template>
   <div class="habits-page">
     <div class="navbar">
-      <h1 class="navbar-brand">习惯拍</h1>
+      <div style="display: flex; flex-direction: row">
+        <img src="/src/assets/logo.svg" style="width: 26px" />
+        <h1 class="navbar-brand ml-5">习惯拍</h1>
+      </div>
     </div>
 
     <div class="container">
