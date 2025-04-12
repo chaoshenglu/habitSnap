@@ -1,13 +1,11 @@
 <template>
   <div class="profile-page">
     <div class="navbar">
-      <router-link to="/habits" class="back-btn">
-        <span class="material-icons">arrow_back</span>
-      </router-link>
+      <div></div>
       <h1 class="navbar-title">个人资料</h1>
       <div></div>
     </div>
-    
+
     <div class="container">
       <div class="card profile-card">
         <div class="profile-header">
@@ -22,55 +20,71 @@
       <div class="card chart-card">
         <h3 class="chart-title">习惯评分趋势</h3>
         <div class="chart-container">
-          <Line v-if="chartData" :data="filteredChartData" :options="chartOptions" />
+          <Line
+            v-if="chartData"
+            :data="filteredChartData"
+            :options="chartOptions"
+          />
           <div v-else class="chart-loading">加载中...</div>
         </div>
       </div>
 
       <div class="profile-stats">
-          <div 
-            class="stat-item" 
-            :class="{ active: selectedType === 'all' }"
-            @click="selectedType = 'all'"
-          >
-            <span class="stat-value">{{ habitsStore.habits.length }}</span>
-            <span class="stat-label">全部</span>
-          </div>
-          <div 
-            class="stat-item" 
-            :class="{ active: selectedType === 'sleep' }"
-            @click="selectedType = 'sleep'"
-          >
-            <span class="stat-value">{{ habitsStore.habitsByType.sleep.length }}</span>
-            <span class="stat-label">睡眠</span>
-          </div>
-          <div 
-            class="stat-item" 
-            :class="{ active: selectedType === 'diet' }"
-            @click="selectedType = 'diet'"
-          >
-            <span class="stat-value">{{ habitsStore.habitsByType.diet.length }}</span>
-            <span class="stat-label">饮食</span>
-          </div>
-          <div 
-            class="stat-item" 
-            :class="{ active: selectedType === 'exercise' }"
-            @click="selectedType = 'exercise'"
-          >
-            <span class="stat-value">{{ habitsStore.habitsByType.exercise.length }}</span>
-            <span class="stat-label">锻炼</span>
-          </div>
-          <div 
-            class="stat-item" 
-            :class="{ active: selectedType === 'meditation' }"
-            @click="selectedType = 'meditation'"
-          >
-            <span class="stat-value">{{ habitsStore.habitsByType.meditation.length }}</span>
-            <span class="stat-label">冥想</span>
-          </div>
+        <div
+          class="stat-item"
+          :class="{ active: selectedType === 'all' }"
+          @click="selectedType = 'all'"
+        >
+          <span class="stat-value">{{ habitsStore.habits.length }}</span>
+          <span class="stat-label">全部</span>
         </div>
-      
-      <button class="btn w-100 mt-3" style="background-color: var(--primary-color);color: white;" @click="handleLogout">
+        <div
+          class="stat-item"
+          :class="{ active: selectedType === 'sleep' }"
+          @click="selectedType = 'sleep'"
+        >
+          <span class="stat-value">{{
+            habitsStore.habitsByType.sleep.length
+          }}</span>
+          <span class="stat-label">睡眠</span>
+        </div>
+        <div
+          class="stat-item"
+          :class="{ active: selectedType === 'diet' }"
+          @click="selectedType = 'diet'"
+        >
+          <span class="stat-value">{{
+            habitsStore.habitsByType.diet.length
+          }}</span>
+          <span class="stat-label">饮食</span>
+        </div>
+        <div
+          class="stat-item"
+          :class="{ active: selectedType === 'exercise' }"
+          @click="selectedType = 'exercise'"
+        >
+          <span class="stat-value">{{
+            habitsStore.habitsByType.exercise.length
+          }}</span>
+          <span class="stat-label">锻炼</span>
+        </div>
+        <div
+          class="stat-item"
+          :class="{ active: selectedType === 'meditation' }"
+          @click="selectedType = 'meditation'"
+        >
+          <span class="stat-value">{{
+            habitsStore.habitsByType.meditation.length
+          }}</span>
+          <span class="stat-label">冥想</span>
+        </div>
+      </div>
+
+      <button
+        class="btn w-100 mt-3"
+        style="background-color: var(--primary-color); color: white"
+        @click="handleLogout"
+      >
         退出登录
       </button>
     </div>
@@ -78,53 +92,70 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '../stores/auth'
-import { useHabitsStore } from '../stores/habits'
+import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth";
+import { useHabitsStore } from "../stores/habits";
 // Fix the import statement
-import { Line } from 'vue-chartjs'
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js'
+import { Line } from "vue-chartjs";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
 // 注册 Chart.js 组件
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-const router = useRouter()
-const authStore = useAuthStore()
-const habitsStore = useHabitsStore()
-const chartData = ref(null)
-const selectedType = ref('all') // 默认选择全部
+const router = useRouter();
+const authStore = useAuthStore();
+const habitsStore = useHabitsStore();
+const chartData = ref(null);
+const selectedType = ref("all"); // 默认选择全部
 
 // 根据选择的类型过滤图表数据
 const filteredChartData = computed(() => {
-  if (!chartData.value) return null
-  
+  if (!chartData.value) return null;
+
   // 如果选择全部，返回完整数据
-  if (selectedType.value === 'all') {
-    return chartData.value
+  if (selectedType.value === "all") {
+    return chartData.value;
   }
-  
+
   // 否则只返回选中类型的数据
   const filteredData = {
     labels: chartData.value.labels,
-    datasets: chartData.value.datasets.filter(dataset => {
+    datasets: chartData.value.datasets.filter((dataset) => {
       // 根据标签匹配类型
       const typeMap = {
-        '睡眠': 'sleep',
-        '饮食': 'diet',
-        '锻炼': 'exercise',
-        '冥想': 'meditation'
-      }
-      
+        睡眠: "sleep",
+        饮食: "diet",
+        锻炼: "exercise",
+        冥想: "meditation",
+      };
+
       // 查找与选中类型匹配的数据集
       return Object.entries(typeMap).some(([label, type]) => {
-        return dataset.label === label && type === selectedType.value
-      })
-    })
-  }
-  
-  return filteredData
-})
+        return dataset.label === label && type === selectedType.value;
+      });
+    }),
+  };
+
+  return filteredData;
+});
 
 // 图表配置
 const chartOptions = {
@@ -135,135 +166,138 @@ const chartOptions = {
       beginAtZero: true,
       max: 5,
       ticks: {
-        stepSize: 1
-      }
-    }
+        stepSize: 1,
+      },
+    },
   },
   plugins: {
     legend: {
-      position: 'bottom'
-    }
-  }
-}
+      position: "bottom",
+    },
+  },
+};
 
 // 准备图表数据
 function prepareChartData() {
   // 获取最近7天的数据
-  const now = new Date()
-  const dates = []
+  const now = new Date();
+  const dates = [];
   for (let i = 6; i >= 0; i--) {
-    const date = new Date(now)
-    date.setDate(date.getDate() - i)
-    dates.push(date.toISOString().split('T')[0])
+    const date = new Date(now);
+    date.setDate(date.getDate() - i);
+    dates.push(date.toISOString().split("T")[0]);
   }
-  
+
   // 按日期和类型分组习惯数据
-  const habitsByDateAndType = {}
-  
+  const habitsByDateAndType = {};
+
   // 初始化数据结构
-  dates.forEach(date => {
+  dates.forEach((date) => {
     habitsByDateAndType[date] = {
       sleep: [],
       diet: [],
       exercise: [],
-      meditation: []
-    }
-  })
-  
+      meditation: [],
+    };
+  });
+
   // 填充数据
-  habitsStore.habits.forEach(habit => {
-    const habitDate = habit.habit_date.split('T')[0]
-    if (dates.includes(habitDate) && habitsByDateAndType[habitDate][habit.type]) {
-      habitsByDateAndType[habitDate][habit.type].push(habit)
+  habitsStore.habits.forEach((habit) => {
+    const habitDate = habit.habit_date.split("T")[0];
+    if (
+      dates.includes(habitDate) &&
+      habitsByDateAndType[habitDate][habit.type]
+    ) {
+      habitsByDateAndType[habitDate][habit.type].push(habit);
     }
-  })
-  
+  });
+
   // 计算每天每种类型的平均评分
-  const sleepScores = []
-  const dietScores = []
-  const exerciseScores = []
-  const meditationScores = []
-  
-  dates.forEach(date => {
-    const dayData = habitsByDateAndType[date]
-    
-    sleepScores.push(calculateAvgScore(dayData.sleep))
-    dietScores.push(calculateAvgScore(dayData.diet))
-    exerciseScores.push(calculateAvgScore(dayData.exercise))
-    meditationScores.push(calculateAvgScore(dayData.meditation))
-  })
-  
+  const sleepScores = [];
+  const dietScores = [];
+  const exerciseScores = [];
+  const meditationScores = [];
+
+  dates.forEach((date) => {
+    const dayData = habitsByDateAndType[date];
+
+    sleepScores.push(calculateAvgScore(dayData.sleep));
+    dietScores.push(calculateAvgScore(dayData.diet));
+    exerciseScores.push(calculateAvgScore(dayData.exercise));
+    meditationScores.push(calculateAvgScore(dayData.meditation));
+  });
+
   // 格式化日期标签
-  const labels = dates.map(date => {
-    const d = new Date(date)
-    return `${d.getMonth() + 1}/${d.getDate()}`
-  })
-  
+  const labels = dates.map((date) => {
+    const d = new Date(date);
+    return `${d.getMonth() + 1}/${d.getDate()}`;
+  });
+
   // 返回图表数据
   return {
     labels,
     datasets: [
       {
-        label: '睡眠',
+        label: "睡眠",
         data: sleepScores,
-        borderColor: '#4361ee',
-        backgroundColor: 'rgba(67, 97, 238, 0.2)',
-        tension: 0.3
+        borderColor: "#4361ee",
+        backgroundColor: "rgba(67, 97, 238, 0.2)",
+        tension: 0.3,
       },
       {
-        label: '饮食',
+        label: "饮食",
         data: dietScores,
-        borderColor: '#f72585',
-        backgroundColor: 'rgba(247, 37, 133, 0.2)',
-        tension: 0.3
+        borderColor: "#f72585",
+        backgroundColor: "rgba(247, 37, 133, 0.2)",
+        tension: 0.3,
       },
       {
-        label: '锻炼',
+        label: "锻炼",
         data: exerciseScores,
-        borderColor: '#4cc9f0',
-        backgroundColor: 'rgba(76, 201, 240, 0.2)',
-        tension: 0.3
+        borderColor: "#4cc9f0",
+        backgroundColor: "rgba(76, 201, 240, 0.2)",
+        tension: 0.3,
       },
       {
-        label: '冥想',
+        label: "冥想",
         data: meditationScores,
-        borderColor: '#4d908e',
-        backgroundColor: 'rgba(77, 144, 142, 0.2)',
-        tension: 0.3
-      }
-    ]
-  }
+        borderColor: "#4d908e",
+        backgroundColor: "rgba(77, 144, 142, 0.2)",
+        tension: 0.3,
+      },
+    ],
+  };
 }
 
 // 计算平均评分
 function calculateAvgScore(habits) {
-  if (habits.length === 0) return null
-  const sum = habits.reduce((acc, habit) => acc + habit.score, 0)
-  return sum / habits.length
+  if (habits.length === 0) return null;
+  const sum = habits.reduce((acc, habit) => acc + habit.score, 0);
+  return sum / habits.length;
 }
 
 onMounted(async () => {
   // 确保用户已登录
   if (!authStore.isAuthenticated) {
-    await authStore.initialize()
+    await authStore.initialize();
     if (!authStore.isAuthenticated) {
-      router.push('/login')
-      return
+      router.push("/login");
+      return;
     }
   }
-  
+
   // 加载习惯数据（如果尚未加载）
   if (habitsStore.habits.length === 0) {
-    await habitsStore.fetchHabits()
+    await habitsStore.fetchHabits();
   }
-  
+
   // 准备图表数据
-  chartData.value = prepareChartData()
-})
+  chartData.value = prepareChartData();
+});
 
 async function handleLogout() {
-  await authStore.logout()
-  router.push('/login')
+  await authStore.logout();
+  router.push("/login");
 }
 </script>
 
