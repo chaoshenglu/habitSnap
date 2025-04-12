@@ -35,16 +35,17 @@ export const useHabitsStore = defineStore('habits', () => {
       }
       
       // 应用日期筛选
-      if (filters.value.startDate) {
+      if (filters.value.startDate && filters.value.endDate) {
         query = query.gte('habit_date', filters.value.startDate)
-      }
-      
-      if (filters.value.endDate) {
         // 将结束日期设置为当天的23:59:59
         const endDate = new Date(filters.value.endDate)
         endDate.setHours(23, 59, 59)
         query = query.lte('habit_date', endDate.toISOString())
+      }else{
+        loading.value = false
+        return
       }
+      
       console.log('filters.value :', filters.value);
       const { data, error: fetchError } = await query
       
