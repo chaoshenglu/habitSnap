@@ -105,7 +105,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRoute } from "vue-router";
 import { useHabitsStore } from "../stores/habits";
 
@@ -124,6 +124,8 @@ const imageViewer = ref({
 
 // 初始化
 onMounted(async () => {
+  // 隐藏底部导航栏
+  document.body.classList.add("hide-bottom-nav");
   const habitId = route.params.id;
   if (habitId) {
     try {
@@ -136,6 +138,11 @@ onMounted(async () => {
     }
   }
   loading.value = false;
+});
+
+// 组件卸载时恢复底部导航栏
+onBeforeUnmount(() => {
+  document.body.classList.remove("hide-bottom-nav");
 });
 
 // 格式化日期
