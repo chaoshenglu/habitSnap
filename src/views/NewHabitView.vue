@@ -28,14 +28,14 @@
     </div>
 
     <div class="container">
-      <div class="navbar-title date-selector" @click="showDatePicker = true">
+      <form @submit.prevent="saveHabit" class="habit-form">
+        <div class="form-group">
+          <label class="form-label">创建时间：</label>
+          <div class="navbar-title date-selector" @click="showDatePicker = true">
         <span class="material-icons date-icon">event</span>
         {{ formatDate(selectedDate) }}
       </div>
-      <form @submit.prevent="saveHabit" class="habit-form">
-        <!-- 习惯类型选择 -->
-        <div class="form-group">
-          <label class="form-label">习惯类型</label>
+          <label class="form-label">习惯类型：</label>
           <div class="type-selector">
             <div
               class="type-option"
@@ -72,9 +72,8 @@
           </div>
         </div>
 
-        <!-- 评分 -->
         <div class="form-group">
-          <label class="form-label">评分</label>
+          <label class="form-label">评分：</label>
           <div class="rating-selector">
             <div
               v-for="i in 5"
@@ -88,14 +87,13 @@
           </div>
         </div>
 
-        <!-- 备注 -->
         <div class="form-group">
-          <label for="remark" class="form-label">备注</label>
+          <label for="remark" class="form-label">评价：</label>
           <textarea
             id="remark"
             v-model="habitRemark"
             class="form-control"
-            placeholder="添加备注..."
+            placeholder="添加评价..."
             rows="3"
           ></textarea>
         </div>
