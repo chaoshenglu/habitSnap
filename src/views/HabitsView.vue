@@ -252,8 +252,9 @@ onMounted(async () => {
   habitsStore.fetchHabits();
 });
 
-function goToDetailPage() {
-  router.push("/habits/detail");
+function goToDetailPage(habit) {
+  if (!habit || !habit.id) return;
+  router.push(`/habits/detail/${habit.id}`);
 }
 
 // 设置快捷日期
