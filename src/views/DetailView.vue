@@ -5,6 +5,7 @@
         <span class="material-icons">arrow_back</span>
       </router-link>
       <h1 class="navbar-title">习惯详情</h1>
+      <div></div>
     </div>
 
     <div class="container">

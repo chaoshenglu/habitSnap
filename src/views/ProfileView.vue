@@ -5,6 +5,7 @@
         <span class="material-icons">arrow_back</span>
       </router-link>
       <h1 class="navbar-title">个人资料</h1>
+      <div></div>
     </div>
     
     <div class="container">
