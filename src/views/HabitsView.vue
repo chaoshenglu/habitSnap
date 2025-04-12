@@ -91,12 +91,18 @@
           >
             <div class="image-grid">
               <div
-                v-for="(url, index) in habit.image_urls"
+                v-for="(url, index) in habit.image_urls.slice(0, 3)"
                 :key="index"
                 class="image-item"
                 @click="openImageViewer(habit.image_urls, index)"
               >
                 <img :src="url" alt="习惯图片" />
+                <div
+                  v-if="index === 2 && habit.image_urls.length > 3"
+                  class="remaining-count"
+                >
+                  +{{ habit.image_urls.length - 3 }}
+                </div>
               </div>
             </div>
           </div>
@@ -454,6 +460,21 @@ function editHabit(habit) {
   border-radius: var(--border-radius);
   overflow: hidden;
   cursor: pointer;
+}
+
+.remaining-count {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .image-item img {
