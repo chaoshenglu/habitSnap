@@ -1,7 +1,7 @@
 <template>
   <div class="habits-page">
     <div class="navbar">
-      <h1 class="navbar-brand">习惯追踪</h1>
+      <h1 class="navbar-brand">习惯拍</h1>
     </div>
 
     <div class="container">

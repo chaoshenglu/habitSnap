@@ -159,7 +159,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { useHabitsStore } from '../stores/habits'
@@ -202,6 +202,10 @@ const isFormValid = computed(() => {
 
 // 初始化 - 获取习惯数据
 onMounted(async () => {
+  // 隐藏底部导航栏
+  const bottomNav = document.querySelector('.bottom-nav')
+  if (bottomNav) bottomNav.style.display = 'none'
+  
   // 确保用户已登录
   if (!authStore.isAuthenticated) {
     await authStore.initialize()
@@ -213,6 +217,12 @@ onMounted(async () => {
   
   // 加载习惯数据
   await loadHabitData()
+})
+
+onUnmounted(() => {
+  // 恢复底部导航栏
+  const bottomNav = document.querySelector('.bottom-nav')
+  if (bottomNav) bottomNav.style.display = 'flex'
 })
 
 // 加载习惯数据

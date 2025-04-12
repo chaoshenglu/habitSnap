@@ -1,7 +1,7 @@
 <template>
   <div class="register-page">
     <div class="container">
-      <h1 class="text-center mb-3">习惯追踪</h1>
+      <h1 class="text-center mb-3">习惯拍</h1>
       <div class="card">
         <h2 class="text-center mb-2">注册</h2>
         
