@@ -8,6 +8,30 @@
       <div></div>
     </div>
 
+    <!-- 删除确认对话框 -->
+    <div
+      v-if="showDeleteConfirm"
+      class="dialog-overlay"
+      @click="showDeleteConfirm = false"
+    >
+      <div class="dialog-content" @click.stop>
+        <h3>确认删除</h3>
+        <p>确定要删除这条习惯记录吗？此操作不可恢复。</p>
+        <div class="dialog-actions">
+          <button class="btn btn-secondary" @click="showDeleteConfirm = false">
+            取消
+          </button>
+          <button
+            class="btn btn-danger"
+            @click="confirmDelete"
+            :disabled="isDeleting"
+          >
+            {{ isDeleting ? "删除中..." : "确认删除" }}
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="container">
       <div v-if="loading" class="loading-indicator">
         <div class="spinner"></div>
@@ -62,6 +86,20 @@
       </div>
     </div>
 
+    <div class="bottom-actions">
+      <router-link
+        :to="`/habits/edit/${route.params.id}`"
+        class="btn btn-primary"
+      >
+        <span class="material-icons">edit</span>
+        编辑
+      </router-link>
+      <button class="btn btn-danger" @click="showDeleteConfirm = true">
+        <span class="material-icons">delete</span>
+        删除
+      </button>
+    </div>
+
     <!-- 图片查看器 -->
     <div
       v-if="imageViewer.visible"
@@ -113,6 +151,8 @@ const route = useRoute();
 const habitsStore = useHabitsStore();
 const loading = ref(true);
 const habit = ref(null);
+const showDeleteConfirm = ref(false);
+const isDeleting = ref(false);
 
 // 图片查看器状态
 const imageViewer = ref({
@@ -144,6 +184,25 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   document.body.classList.remove("hide-bottom-nav");
 });
+
+// 删除习惯
+async function confirmDelete() {
+  isDeleting.value = true;
+  try {
+    const { success, error } = await habitsStore.deleteHabit(route.params.id);
+    if (success) {
+      showDeleteConfirm.value = false;
+      // 返回列表页
+      router.push("/habits");
+    } else {
+      console.error("Error deleting habit:", error);
+    }
+  } catch (err) {
+    console.error("Error deleting habit:", err);
+  } finally {
+    isDeleting.value = false;
+  }
+}
 
 // 格式化日期
 function formatDate(dateString) {
@@ -410,5 +469,73 @@ function nextImage() {
   text-align: center;
   padding: 32px 16px;
   color: #666;
+}
+
+/* 底部按钮 */
+.bottom-actions {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.bottom-actions .btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+}
+
+.btn-danger {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* 对话框样式 */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.dialog-content {
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.dialog-content h3 {
+  margin: 0 0 16px 0;
+  font-size: 1.25rem;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.dialog-actions .btn {
+  padding: 8px 16px;
 }
 </style>
