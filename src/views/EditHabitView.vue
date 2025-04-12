@@ -136,7 +136,6 @@
               multiple
               @change="handleFileSelect"
               class="file-input"
-              capture="environment"
             />
           </div>
 
