@@ -51,7 +51,7 @@
           </div>
         </div>
 
-        <div v-if="habit.remark" class="habit-remark">
+        <div v-if="habit.remark" class="habit-detail-remark">
           <p>评语：{{ habit.remark }}</p>
         </div>
       </div>
@@ -292,16 +292,16 @@ function nextImage() {
   color: #ffb400;
 }
 
-.habit-remark {
+.habit-detail-remark {
   margin-top: 16px;
 }
 
-.habit-remark h3 {
+.habit-detail-remark h3 {
   font-size: 1rem;
   margin-bottom: 8px;
 }
 
-.habit-remark p {
+.habit-detail-remark p {
   margin: 0;
   white-space: pre-wrap;
 }
