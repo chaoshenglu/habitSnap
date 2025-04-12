@@ -3,7 +3,11 @@
     <div class="navbar">
       <div></div>
       <h1 class="navbar-title">添加习惯记录</h1>
-      <button type="submit" :disabled="isSubmitting || !isFormValid">
+      <button
+        @click="saveHabit"
+        type="submit"
+        :disabled="isSubmitting || !isFormValid"
+      >
         {{ isSubmitting ? "保存中..." : "保存" }}
       </button>
     </div>
@@ -30,7 +34,7 @@
     </div>
 
     <div class="container">
-      <form @submit.prevent="saveHabit" class="habit-form">
+      <form class="habit-form">
         <div class="form-group">
           <label class="form-label">创建时间：</label>
           <div
