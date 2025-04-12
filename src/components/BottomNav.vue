@@ -1,14 +1,26 @@
 <template>
   <nav class="bottom-nav">
-    <router-link to="/habits" class="bottom-nav-item" :class="{ active: currentRoute === '/habits' }">
+    <router-link
+      to="/habits"
+      class="bottom-nav-item"
+      :class="{ active: currentRoute === '/habits' }"
+    >
       <span class="material-icons">list</span>
-      <span>习惯列表</span>
+      <span>习惯</span>
     </router-link>
-    <router-link to="/habits/new" class="bottom-nav-item" :class="{ active: currentRoute === '/habits/new' }">
+    <router-link
+      to="/habits/new"
+      class="bottom-nav-item"
+      :class="{ active: currentRoute === '/habits/new' }"
+    >
       <span class="material-icons">add_a_photo</span>
       <span>添加</span>
     </router-link>
-    <router-link to="/profile" class="bottom-nav-item" :class="{ active: currentRoute === '/profile' }">
+    <router-link
+      to="/profile"
+      class="bottom-nav-item"
+      :class="{ active: currentRoute === '/profile' }"
+    >
       <span class="material-icons">person</span>
       <span>我的</span>
     </router-link>
@@ -16,11 +28,11 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed } from "vue";
+import { useRoute } from "vue-router";
 
-const route = useRoute()
-const currentRoute = computed(() => route.path)
+const route = useRoute();
+const currentRoute = computed(() => route.path);
 </script>
 
 <style scoped>
