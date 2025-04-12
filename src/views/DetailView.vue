@@ -118,9 +118,9 @@ onMounted(async () => {
   const habitId = route.params.id;
   if (habitId) {
     try {
-      const habits = await habitsStore.fetchHabits();
-      if (habits) {
-        habit.value = habits.find(h => h.id === habitId);
+      const data = await habitsStore.fetchHabitById(habitId);
+      if (data) {
+        habit.value = data;
       }
     } catch (err) {
       console.error('Error fetching habit:', err);

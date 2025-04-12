@@ -196,6 +196,32 @@ export const useHabitsStore = defineStore('habits', () => {
     }
   }
   
+  // 获取单个习惯详情
+  async function fetchHabitById(id) {
+    if (!authStore.isAuthenticated) return null
+    
+    loading.value = true
+    error.value = null
+    
+    try {
+      const { data, error: fetchError } = await supabase
+        .from('habits')
+        .select('*')
+        .eq('id', id)
+        .eq('user_id', authStore.user.id)
+        .single()
+      
+      if (fetchError) throw fetchError
+      return data
+    } catch (err) {
+      error.value = err.message
+      console.error('Error fetching habit:', err)
+      return null
+    } finally {
+      loading.value = false
+    }
+  }
+
   return {
     habits,
     loading,
@@ -203,6 +229,7 @@ export const useHabitsStore = defineStore('habits', () => {
     filters,
     habitsByType,
     fetchHabits,
+    fetchHabitById,
     createHabit,
     deleteHabit,
     updateHabit,
