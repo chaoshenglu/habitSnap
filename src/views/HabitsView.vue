@@ -56,7 +56,7 @@
               height: 40px;
               position: absolute;
               right: 0px;
-              top: 2px;
+              top: 0px;
               border: 1px solid rgba(0, 0, 0, 0.2);
               border-radius: 6px;
             "
