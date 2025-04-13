@@ -276,11 +276,10 @@ function prepareChartData() {
   };
 }
 
-// 计算平均评分
+// 获取评分
 function calculateAvgScore(habits) {
   if (habits.length === 0) return null;
-  const sum = habits.reduce((acc, habit) => acc + habit.score, 0);
-  return sum / habits.length;
+  return habits[0].score; // 直接返回第一个（也是唯一的）习惯的评分
 }
 
 // 获取习惯数据并更新图表
