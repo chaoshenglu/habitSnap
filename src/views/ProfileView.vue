@@ -254,8 +254,8 @@ function prepareChartData() {
       {
         label: "饮食",
         data: dietScores,
-        borderColor: "#f72585",
-        backgroundColor: "rgba(247, 37, 133, 0.2)",
+        borderColor: "#2ecc71",
+        backgroundColor: "rgba(46, 204, 113, 0.2)",
         tension: 0.3,
       },
       {
@@ -268,8 +268,8 @@ function prepareChartData() {
       {
         label: "冥想",
         data: meditationScores,
-        borderColor: "#4d908e",
-        backgroundColor: "rgba(77, 144, 142, 0.2)",
+        borderColor: "#e74c3c",
+        backgroundColor: "rgba(231, 76, 60, 0.2)",
         tension: 0.3,
       },
     ],
