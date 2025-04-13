@@ -6,10 +6,20 @@ import { pinia } from './stores'
 // 注册service worker
 import { registerSW } from 'virtual:pwa-register'
 
-registerSW({
+// 注册service worker并获取更新函数
+const updateSW = registerSW({
   onNeedRefresh() {
-    // 当有新内容可用时，可以显示通知给用户
-    console.log('有新内容可用，请刷新')
+    // 当有新内容可用时，自动更新并提示用户刷新
+    console.log('检测到新版本，正在自动更新...')
+    // 自动应用更新
+    updateSW()
+      .then(() => {
+        // 更新成功后提示用户刷新页面以应用更新
+        alert('应用已更新到最新版本，请刷新页面以应用更新')
+      })
+      .catch(err => {
+        console.error('更新失败:', err)
+      })
   },
   onOfflineReady() {
     // 当应用可以离线工作时
