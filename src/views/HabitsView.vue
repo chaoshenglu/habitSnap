@@ -48,6 +48,7 @@
             今天
           </button>
           <div
+            @click="switchRows"
             style="
               display: flex;
               align-items: center;
@@ -401,6 +402,8 @@ function editHabit(habit) {
   router.push(`/habits/edit/${habit.id}`);
   actionMenu.value.visible = false;
 }
+
+function switchRows() {}
 </script>
 
 <style scoped>
