@@ -154,9 +154,9 @@
 
             <div class="day-habits-grid">
               <div class="day-habit-item">
-                <span class="habit-type-label">睡眠</span>
                 <div class="habit-score-display">
                   <div v-if="day.habits.sleep" class="rating">
+                    🛌
                     <span
                       v-for="i in 5"
                       :key="i"
@@ -170,9 +170,9 @@
               </div>
 
               <div class="day-habit-item">
-                <span class="habit-type-label">饮食</span>
                 <div class="habit-score-display">
                   <div v-if="day.habits.diet" class="rating">
+                    🍚
                     <span
                       v-for="i in 5"
                       :key="i"
