@@ -186,9 +186,9 @@
               </div>
 
               <div class="day-habit-item">
-                <span class="habit-type-label">锻炼</span>
                 <div class="habit-score-display">
                   <div v-if="day.habits.exercise" class="rating">
+                    💪🏼
                     <span
                       v-for="i in 5"
                       :key="i"
@@ -202,9 +202,9 @@
               </div>
 
               <div class="day-habit-item">
-                <span class="habit-type-label">冥想</span>
                 <div class="habit-score-display">
                   <div v-if="day.habits.meditation" class="rating">
+                    🧘🏻
                     <span
                       v-for="i in 5"
                       :key="i"
