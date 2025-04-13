@@ -403,7 +403,13 @@ function editHabit(habit) {
   actionMenu.value.visible = false;
 }
 
-function switchRows() {}
+// 切换数据的展示方式（方式一与方式二直接来回切换）
+function switchRows() {
+  //# 方式一:列表的一项 对应 一个习惯
+  //# 方式二:根据habitsStore.habits生成一个新的数组(days)，一项 对应 一天
+  //在这一个卡片中显示当天的日期和4个习惯的评分即可，不需要展示习惯的图片和评语，若当天只记录了睡眠，没有记录其他三项，其他三项的分数显示为"-"。
+  //当数据以方式二的形式展现时，不支持修改和删除习惯，也不支持点击卡片进入详情页。
+}
 </script>
 
 <style scoped>
