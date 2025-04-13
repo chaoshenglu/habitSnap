@@ -79,140 +79,218 @@
       </div>
 
       <div v-else class="habits-list">
-        <div
-          v-for="habit in habitsStore.habits"
-          :key="habit.id"
-          class="habit-card card"
-        >
-          <div class="habit-header">
-            <div @click="goToDetailPage(habit)">
-              <span class="habit-date">{{ formatDate(habit.habit_date) }}</span>
-              <span class="habit-tag ml-5" :class="`habit-tag-${habit.type}`">
-                {{ habitTypeText(habit.type) }}
-              </span>
-            </div>
-            <button class="more-btn" @click.stop="openActionMenu(habit)">
-              <span class="material-icons">more_vert</span>
-            </button>
-          </div>
-
+        <div v-if="viewMode === 'habit'">
           <div
-            v-if="habit.image_urls && habit.image_urls.length > 0"
-            class="habit-images"
+            v-for="habit in habitsStore.habits"
+            :key="habit.id"
+            class="habit-card card"
           >
-            <div class="image-grid">
-              <div
-                v-for="(url, index) in habit.image_urls.slice(0, 3)"
-                :key="index"
-                class="image-item"
-                @click="openImageViewer(habit.image_urls, index)"
-              >
-                <img :src="url" alt="习惯图片" />
+            <div class="habit-header">
+              <div @click="goToDetailPage(habit)">
+                <span class="habit-date">{{
+                  formatDate(habit.habit_date)
+                }}</span>
+                <span class="habit-tag ml-5" :class="`habit-tag-${habit.type}`">
+                  {{ habitTypeText(habit.type) }}
+                </span>
+              </div>
+              <button class="more-btn" @click.stop="openActionMenu(habit)">
+                <span class="material-icons">more_vert</span>
+              </button>
+            </div>
+
+            <div
+              v-if="habit.image_urls && habit.image_urls.length > 0"
+              class="habit-images"
+            >
+              <div class="image-grid">
                 <div
-                  v-if="index === 2 && habit.image_urls.length > 3"
-                  class="remaining-count"
+                  v-for="(url, index) in habit.image_urls.slice(0, 3)"
+                  :key="index"
+                  class="image-item"
+                  @click="openImageViewer(habit.image_urls, index)"
                 >
-                  +{{ habit.image_urls.length - 3 }}
+                  <img :src="url" alt="习惯图片" />
+                  <div
+                    v-if="index === 2 && habit.image_urls.length > 3"
+                    class="remaining-count"
+                  >
+                    +{{ habit.image_urls.length - 3 }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div v-if="habit.score" class="habit-score">
+              <span class="score-label">评分：</span>
+              <div class="rating">
+                <span
+                  v-for="i in 5"
+                  :key="i"
+                  class="rating-star"
+                  :class="{ active: i <= habit.score }"
+                  >★</span
+                >
+              </div>
+            </div>
+
+            <div @click="goToDetailPage(habit)">
+              <p v-if="habit.remark" class="habit-remark">
+                评语：{{ habit.remark }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div v-else>
+          <div
+            v-for="day in dayGroupedHabits"
+            :key="day.date"
+            class="day-card card"
+          >
+            <div class="day-header">
+              <span class="day-date">{{ formatDateSimple(day.date) }}</span>
+            </div>
+
+            <div class="day-habits-grid">
+              <div class="day-habit-item">
+                <span class="habit-type-label">睡眠</span>
+                <div class="habit-score-display">
+                  <div v-if="day.habits.sleep" class="rating">
+                    <span
+                      v-for="i in 5"
+                      :key="i"
+                      class="rating-star"
+                      :class="{ active: i <= day.habits.sleep.score }"
+                      >★</span
+                    >
+                  </div>
+                  <span v-else>-</span>
+                </div>
+              </div>
+
+              <div class="day-habit-item">
+                <span class="habit-type-label">饮食</span>
+                <div class="habit-score-display">
+                  <div v-if="day.habits.diet" class="rating">
+                    <span
+                      v-for="i in 5"
+                      :key="i"
+                      class="rating-star"
+                      :class="{ active: i <= day.habits.diet.score }"
+                      >★</span
+                    >
+                  </div>
+                  <span v-else>-</span>
+                </div>
+              </div>
+
+              <div class="day-habit-item">
+                <span class="habit-type-label">锻炼</span>
+                <div class="habit-score-display">
+                  <div v-if="day.habits.exercise" class="rating">
+                    <span
+                      v-for="i in 5"
+                      :key="i"
+                      class="rating-star"
+                      :class="{ active: i <= day.habits.exercise.score }"
+                      >★</span
+                    >
+                  </div>
+                  <span v-else>-</span>
+                </div>
+              </div>
+
+              <div class="day-habit-item">
+                <span class="habit-type-label">冥想</span>
+                <div class="habit-score-display">
+                  <div v-if="day.habits.meditation" class="rating">
+                    <span
+                      v-for="i in 5"
+                      :key="i"
+                      class="rating-star"
+                      :class="{ active: i <= day.habits.meditation.score }"
+                      >★</span
+                    >
+                  </div>
+                  <span v-else>-</span>
                 </div>
               </div>
             </div>
           </div>
-
-          <div v-if="habit.score" class="habit-score">
-            <span class="score-label">评分：</span>
-            <div class="rating">
-              <span
-                v-for="i in 5"
-                :key="i"
-                class="rating-star"
-                :class="{ active: i <= habit.score }"
-                >★</span
-              >
-            </div>
-          </div>
-
-          <div @click="goToDetailPage(habit)">
-            <p v-if="habit.remark" class="habit-remark">
-              评语：{{ habit.remark }}
-            </p>
-          </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- 图片查看器 -->
-    <div
-      v-if="imageViewer.visible"
-      class="image-viewer"
-      @click="closeImageViewer"
-    >
-      <div class="image-viewer-content" @click.stop>
-        <img :src="imageViewer.currentImage" alt="习惯图片" />
-        <div class="image-viewer-controls">
-          <button
-            class="btn btn-secondary"
-            @click="prevImage"
-            :disabled="imageViewer.currentIndex === 0"
-          >
-            上一张
-          </button>
-          <span
-            >{{ imageViewer.currentIndex + 1 }} /
-            {{ imageViewer.images.length }}</span
-          >
-          <button
-            class="btn btn-secondary"
-            @click="nextImage"
-            :disabled="
-              imageViewer.currentIndex === imageViewer.images.length - 1
-            "
-          >
-            下一张
-          </button>
-          <button
-            class="btn btn-close-viewer"
-            @click="closeImageViewer"
-            aria-label="关闭"
-          >
-            关闭
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 底部操作菜单 -->
-    <div
-      v-if="actionMenu.visible"
-      class="action-menu-overlay"
-      @click="actionMenu.visible = false"
-    >
-      <div class="action-menu">
-        <button class="action-btn edit" @click="editHabit(actionMenu.habit)">
-          修改
+  <!-- 图片查看器 -->
+  <div
+    v-if="imageViewer.visible"
+    class="image-viewer"
+    @click="closeImageViewer"
+  >
+    <div class="image-viewer-content" @click.stop>
+      <img :src="imageViewer.currentImage" alt="习惯图片" />
+      <div class="image-viewer-controls">
+        <button
+          class="btn btn-secondary"
+          @click="prevImage"
+          :disabled="imageViewer.currentIndex === 0"
+        >
+          上一张
+        </button>
+        <span
+          >{{ imageViewer.currentIndex + 1 }} /
+          {{ imageViewer.images.length }}</span
+        >
+        <button
+          class="btn btn-secondary"
+          @click="nextImage"
+          :disabled="imageViewer.currentIndex === imageViewer.images.length - 1"
+        >
+          下一张
         </button>
         <button
-          class="action-btn delete"
-          @click="confirmDelete(actionMenu.habit.id)"
+          class="btn btn-close-viewer"
+          @click="closeImageViewer"
+          aria-label="关闭"
         >
-          删除
-        </button>
-        <button class="action-btn cancel" @click="actionMenu.visible = false">
-          取消
+          关闭
         </button>
       </div>
     </div>
+  </div>
 
-    <!-- 确认删除对话框 -->
-    <div v-if="deleteConfirm.visible" class="modal-overlay">
-      <div class="modal-content card">
-        <h3>确认删除</h3>
-        <p>确定要删除这条习惯记录吗？此操作不可撤销。</p>
-        <div class="modal-actions">
-          <button class="btn" @click="deleteConfirm.visible = false">
-            取消
-          </button>
-          <button class="btn btn-danger" @click="deleteHabit">删除</button>
-        </div>
+  <!-- 底部操作菜单 -->
+  <div
+    v-if="actionMenu.visible"
+    class="action-menu-overlay"
+    @click="actionMenu.visible = false"
+  >
+    <div class="action-menu">
+      <button class="action-btn edit" @click="editHabit(actionMenu.habit)">
+        修改
+      </button>
+      <button
+        class="action-btn delete"
+        @click="confirmDelete(actionMenu.habit.id)"
+      >
+        删除
+      </button>
+      <button class="action-btn cancel" @click="actionMenu.visible = false">
+        取消
+      </button>
+    </div>
+  </div>
+
+  <!-- 确认删除对话框 -->
+  <div v-if="deleteConfirm.visible" class="modal-overlay">
+    <div class="modal-content card">
+      <h3>确认删除</h3>
+      <p>确定要删除这条习惯记录吗？此操作不可撤销。</p>
+      <div class="modal-actions">
+        <button class="btn" @click="deleteConfirm.visible = false">取消</button>
+        <button class="btn btn-danger" @click="deleteHabit">删除</button>
       </div>
     </div>
   </div>
@@ -227,6 +305,7 @@ import { useHabitsStore } from "../stores/habits";
 const router = useRouter();
 const authStore = useAuthStore();
 const habitsStore = useHabitsStore();
+const viewMode = ref("habit"); // 'habit' 或 'day'
 
 // 日期筛选
 const startDate = ref("");
@@ -403,6 +482,39 @@ function editHabit(habit) {
   actionMenu.value.visible = false;
 }
 
+// 添加一个计算属性，用于按天分组习惯数据
+const dayGroupedHabits = computed(() => {
+  if (!habitsStore.habits.length) return [];
+
+  // 按日期分组
+  const habitsByDate = {};
+
+  habitsStore.habits.forEach((habit) => {
+    // 提取日期部分（不包含时间）
+    const dateOnly = habit.habit_date.split("T")[0];
+
+    if (!habitsByDate[dateOnly]) {
+      habitsByDate[dateOnly] = {
+        date: dateOnly,
+        habits: {
+          sleep: null,
+          diet: null,
+          exercise: null,
+          meditation: null,
+        },
+      };
+    }
+
+    // 每种类型只保存一条记录（如果有多条，以最后一条为准）
+    habitsByDate[dateOnly].habits[habit.type] = habit;
+  });
+
+  // 转换为数组并按日期降序排序
+  return Object.values(habitsByDate).sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+});
+
 // 切换数据的展示方式（方式一与方式二直接来回切换）
 function switchRows() {
   //# 方式一:列表的一项 对应 一个习惯(已完成)
@@ -410,6 +522,7 @@ function switchRows() {
   //在这一个卡片中显示当天的日期和4个习惯的评分即可，不需要展示习惯的图片和评语，若当天只记录了睡眠，没有记录其他三项，其他三项的分数显示为"-"。
   //不需要考虑一天有多个睡眠记录的情况，因为我会限制每种类型的习惯每天只能记录一次。
   //当数据以方式二的形式展现时，不支持修改和删除习惯，也不支持点击卡片进入详情页。
+  viewMode.value = viewMode.value === "habit" ? "day" : "habit";
 }
 </script>
 
