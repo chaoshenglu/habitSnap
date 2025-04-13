@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import { pinia } from './stores'
+import UpdateModal from './components/UpdateModal.vue'
 
 // 注册service worker
 import { registerSW } from 'virtual:pwa-register'
@@ -14,8 +15,8 @@ const updateSW = registerSW({
     // 自动应用更新
     updateSW()
       .then(() => {
-        // 更新成功后提示用户刷新页面以应用更新
-        alert('应用已更新到最新版本，请刷新页面以应用更新')
+        // 更新成功后显示自定义更新弹框
+        app.config.globalProperties.$updateModalVisible = true
       })
       .catch(err => {
         console.error('更新失败:', err)
@@ -29,6 +30,9 @@ const updateSW = registerSW({
 
 // 创建Vue应用实例
 const app = createApp(App)
+
+// 添加全局属性用于控制更新弹框
+app.config.globalProperties.$updateModalVisible = false
 
 // 使用路由和Pinia
 app.use(router)
