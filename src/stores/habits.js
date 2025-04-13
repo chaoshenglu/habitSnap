@@ -133,16 +133,6 @@ export const useHabitsStore = defineStore('habits', () => {
     fetchHabits()
   }
   
-  // 重置筛选条件
-  function resetFilters() {
-    filters.value = {
-      type: null,
-      startDate: null,
-      endDate: null
-    }
-    fetchHabits()
-  }
-  
   // 按类型分组的习惯统计
   const habitsByType = computed(() => {
     const result = {
@@ -234,7 +224,6 @@ export const useHabitsStore = defineStore('habits', () => {
     createHabit,
     deleteHabit,
     updateHabit,
-    updateFilters,
-    resetFilters
+    updateFilters
   }
 })

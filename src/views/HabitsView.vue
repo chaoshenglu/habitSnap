@@ -47,12 +47,6 @@
           >
             今天
           </button>
-          <button
-            class="btn btn-secondary ml-10"
-            @click="habitsStore.resetFilters()"
-          >
-            重置筛选
-          </button>
         </div>
       </div>
 
