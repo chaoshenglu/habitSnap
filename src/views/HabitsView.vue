@@ -28,7 +28,7 @@
             />
           </div>
         </div>
-        <div class="quick-date-buttons">
+        <div class="quick-date-buttons" style="position: relative">
           <button
             class="btn btn-secondary"
             @click="setQuickDate('dayBeforeYesterday')"
@@ -47,6 +47,22 @@
           >
             今天
           </button>
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 40px;
+              height: 40px;
+              position: absolute;
+              right: 0px;
+              top: 2px;
+              border: 1px solid rgba(0, 0, 0, 0.2);
+              border-radius: 6px;
+            "
+          >
+            <img src="/src/assets/switch.png" style="width: 20px" />
+          </div>
         </div>
       </div>
 

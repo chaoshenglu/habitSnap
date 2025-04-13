@@ -76,6 +76,7 @@ html, body {
 .btn-secondary {
   background-color: var(--secondary-color);
   color: white;
+  min-height: 40px;
 }
 
 .btn-danger {
