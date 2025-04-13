@@ -356,6 +356,15 @@ function goToDetailPage(habit) {
   router.push(`/habits/detail/${habit.id}`);
 }
 
+function formatDateSimple(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("zh-CN", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+}
+
 // 设置快捷日期
 function setQuickDate(type) {
   const today = new Date();
@@ -831,6 +840,47 @@ function switchRows() {
   to {
     transform: rotate(360deg);
   }
+}
+
+.day-card {
+  margin-bottom: 16px;
+  padding: 16px;
+}
+
+.day-header {
+  margin-bottom: 12px;
+}
+
+.day-date {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.day-habits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.day-habit-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px;
+  background-color: var(--light-bg);
+  border-radius: var(--border-radius);
+}
+
+.habit-type-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.habit-score-display {
+  display: flex;
+  justify-content: center;
 }
 
 /* 空状态 */
