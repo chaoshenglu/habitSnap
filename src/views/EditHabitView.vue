@@ -125,15 +125,29 @@
         <div class="form-group">
           <label class="form-label">照片</label>
           <div class="image-upload-container">
-            <div class="image-upload-btn" @click="openFilePicker">
-              <span class="material-icons">add_a_photo</span>
-              <span>添加照片</span>
+            <div class="image-upload-options">
+              <div class="image-upload-btn" @click="openGallery">
+                <span class="material-icons">photo_library</span>
+                <span>从相册选择</span>
+              </div>
+              <div class="image-upload-btn" @click="openCamera">
+                <span class="material-icons">photo_camera</span>
+                <span>拍照</span>
+              </div>
             </div>
             <input
               type="file"
-              ref="fileInput"
+              ref="galleryInput"
               accept="image/*"
               multiple
+              @change="handleFileSelect"
+              class="file-input"
+            />
+            <input
+              type="file"
+              ref="cameraInput"
+              accept="image/*"
+              capture="environment"
               @change="handleFileSelect"
               class="file-input"
             />
@@ -199,7 +213,8 @@ const existingImageUrls = ref([]);
 const error = ref("");
 const isSubmitting = ref(false);
 const loading = ref(true);
-const fileInput = ref(null);
+const galleryInput = ref(null);
+const cameraInput = ref(null);
 
 // 格式化日期显示
 function formatDate(date) {
@@ -275,9 +290,14 @@ onBeforeUnmount(() => {
   document.body.classList.remove("hide-bottom-nav");
 });
 
-// 打开文件选择器
-function openFilePicker() {
-  fileInput.value.click();
+// 打开相册选择器
+function openGallery() {
+  galleryInput.value.click();
+}
+
+// 打开相机拍照
+function openCamera() {
+  cameraInput.value.click();
 }
 
 // 处理文件选择
@@ -519,16 +539,23 @@ async function updateHabit() {
   margin-bottom: 16px;
 }
 
+.image-upload-options {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
 .image-upload-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 24px;
+  padding: 16px;
   border: 2px dashed #ddd;
   border-radius: var(--border-radius);
   cursor: pointer;
   transition: all 0.2s;
+  flex: 1;
 }
 
 .image-upload-btn:hover {
