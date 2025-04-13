@@ -67,6 +67,29 @@ export const useHabitsStore = defineStore('habits', () => {
     error.value = null
     
     try {
+      // 检查当天是否已有同类型的记录
+      const habitDate = new Date(habit_date);
+      const startOfDay = new Date(habitDate.getFullYear(), habitDate.getMonth(), habitDate.getDate());
+      const endOfDay = new Date(habitDate.getFullYear(), habitDate.getMonth(), habitDate.getDate(), 23, 59, 59);
+      
+      const { data: existingHabits, error: checkError } = await supabase
+        .from('habits')
+        .select('id')
+        .eq('user_id', authStore.user.id)
+        .eq('type', type)
+        .gte('habit_date', startOfDay.toISOString())
+        .lte('habit_date', endOfDay.toISOString());
+      
+      if (checkError) throw checkError;
+      
+      // 如果已存在同类型记录，返回错误
+      if (existingHabits && existingHabits.length > 0) {
+        return { 
+          success: false, 
+          error: `当天已经记录过${type === 'sleep' ? '睡眠' : type === 'diet' ? '饮食' : type === 'exercise' ? '锻炼' : '冥想'}习惯，每天只能记录一次同类型习惯。` 
+        };
+      }
+      
       const newHabit = {
         user_id: authStore.user.id,
         type,
@@ -96,7 +119,7 @@ export const useHabitsStore = defineStore('habits', () => {
     } finally {
       loading.value = false
     }
-  }
+  } 
   
   // 删除习惯记录
   async function deleteHabit(id) {
