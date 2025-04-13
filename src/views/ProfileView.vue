@@ -107,7 +107,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, watch, onActivated } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
 import { useHabitsStore } from "../stores/habits";
@@ -283,7 +283,8 @@ function calculateAvgScore(habits) {
   return sum / habits.length;
 }
 
-onMounted(async () => {
+// 获取习惯数据并更新图表
+async function fetchDataAndUpdateChart() {
   // 确保用户已登录
   if (!authStore.isAuthenticated) {
     await authStore.initialize();
@@ -293,18 +294,34 @@ onMounted(async () => {
     }
   }
 
-  // 加载习惯数据（如果尚未加载）
-  if (habitsStore.habits.length === 0) {
-    await habitsStore.fetchHabits();
-  }
+  // 设置日期过滤器（最近7天）
+  const now = new Date();
+  const startDate = new Date(now);
+  startDate.setDate(startDate.getDate() - (dateRange.value - 1));
+
+  // 设置过滤条件并获取习惯数据
+  habitsStore.filters.startDate = startDate.toISOString().split("T")[0];
+  habitsStore.filters.endDate = now.toISOString().split("T")[0];
+
+  // 每次都重新获取数据
+  await habitsStore.fetchHabits();
 
   // 准备图表数据
   chartData.value = prepareChartData();
+}
+
+onMounted(async () => {
+  await fetchDataAndUpdateChart();
 });
 
-// 监听dateRange变化，重新生成图表数据
-watch(dateRange, () => {
-  chartData.value = prepareChartData();
+// 每次组件被激活时（从其他页面返回时）都刷新数据
+onActivated(async () => {
+  await fetchDataAndUpdateChart();
+});
+
+// 监听dateRange变化，重新获取数据并生成图表
+watch(dateRange, async () => {
+  await fetchDataAndUpdateChart();
 });
 
 async function handleLogout() {
